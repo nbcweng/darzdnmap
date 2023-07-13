@@ -1,0 +1,917 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/zdn_1.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+        }
+        map.createPane('pane_GoogleTerrainHybrid_0');
+        map.getPane('pane_GoogleTerrainHybrid_0').style.zIndex = 400;
+        var layer_GoogleTerrainHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleTerrainHybrid_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+        });
+        layer_GoogleTerrainHybrid_0;
+        map.addLayer(layer_GoogleTerrainHybrid_0);
+        function pop_zdn_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Reg_Name</th>\
+                        <td>' + (feature.properties['Reg_Name'] !== null ? autolinker.link(feature.properties['Reg_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Pro_Name</th>\
+                        <td>' + (feature.properties['Pro_Name'] !== null ? autolinker.link(feature.properties['Pro_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Mun_Name</th>\
+                        <td>' + (feature.properties['Mun_Name'] !== null ? autolinker.link(feature.properties['Mun_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Bgy_Name</th>\
+                        <td>' + (feature.properties['Bgy_Name'] !== null ? autolinker.link(feature.properties['Bgy_Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ARC</th>\
+                        <td>' + (feature.properties['ARC'] !== null ? autolinker.link(feature.properties['ARC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ARC CLASS</th>\
+                        <td>' + (feature.properties['ARC CLASS'] !== null ? autolinker.link(feature.properties['ARC CLASS'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ARCC</th>\
+                        <td>' + (feature.properties['ARCC'] !== null ? autolinker.link(feature.properties['ARCC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_zdn_1_0(feature) {
+            switch(String(feature.properties['Mun_Name'])) {
+                case 'BACUNGAN (Leon T. Postigo)':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(84,227,208,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'BALIGUIAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(110,187,220,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DAPITAN CITY':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(149,135,224,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'DIPOLOG CITY (Capital)':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,228,98,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'GODOD':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,22,91,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'GUTALAC':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(70,220,135,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'JOSE DALMAN (PONOT)':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(174,208,115,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KALAWIT':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(97,239,130,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'KATIPUNAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(239,160,126,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LA LIBERTAD':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(182,108,200,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LABASON':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(139,228,140,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'LILOY':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(179,206,44,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MANUKAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(88,222,54,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MUTIA':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(123,211,180,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PIÑAN (NEW PIÑAN)':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(218,36,20,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'POLANCO':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(225,54,148,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'PRES. MANUEL A. ROXAS':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(210,72,88,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'RIZAL':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,57,184,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SALUG':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(132,157,220,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SERGIO OSMEÑA SR.':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,167,210,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SIAYAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(43,190,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SIBUCO':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(135,76,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SIBUTAD':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,221,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SINDANGAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(76,85,204,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SIOCON':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(230,110,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SIRAWAI':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(163,109,202,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'TAMPILISAN':
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(222,183,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_zdn_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,170,109,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_zdn_1');
+        map.getPane('pane_zdn_1').style.zIndex = 401;
+        map.getPane('pane_zdn_1').style['mix-blend-mode'] = 'normal';
+        var layer_zdn_1 = new L.geoJson(json_zdn_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_zdn_1',
+            layerName: 'layer_zdn_1',
+            pane: 'pane_zdn_1',
+            onEachFeature: pop_zdn_1,
+            style: style_zdn_1_0,
+        });
+        bounds_group.addLayer(layer_zdn_1);
+        map.addLayer(layer_zdn_1);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"ARCC": "str","Mun_Name": "str","ARC": "str","ARC CLASS": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ARCC = document.createElement('div');
+            div_ARCC.id = "div_ARCC";
+            div_ARCC.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARCC);
+            sel_ARCC = document.createElement('select');
+            sel_ARCC.multiple = true;
+            sel_ARCC.size = 7;
+            sel_ARCC.id = "sel_ARCC";
+            var ARCC_options_str = "<option value='' unselected></option>";
+            sel_ARCC.onchange = function(){filterFunc()};
+            ARCC_options_str  += '<option value="CONVERGENCE">CONVERGENCE</option>';
+            ARCC_options_str  += '<option value="DALARS">DALARS</option>';
+            ARCC_options_str  += '<option value="KALIGULAB">KALIGULAB</option>';
+            ARCC_options_str  += '<option value="NON-ARCC">NON-ARCC</option>';
+            ARCC_options_str  += '<option value="ZN CLUSTER 1">ZN CLUSTER 1</option>';
+            ARCC_options_str  += '<option value="ZN GATEWAY CORRIDOR">ZN GATEWAY CORRIDOR</option>';
+            ARCC_options_str  += '<option value="ZN RESETTLEMENT">ZN RESETTLEMENT</option>';
+            sel_ARCC.innerHTML = ARCC_options_str;
+            div_ARCC.appendChild(sel_ARCC);
+            var lab_ARCC = document.createElement('div');
+            lab_ARCC.innerHTML = 'ARCC';
+            lab_ARCC.className = 'filterlabel';
+            div_ARCC.appendChild(lab_ARCC);
+            var reset_ARCC = document.createElement('div');
+            reset_ARCC.innerHTML = 'clear filter';
+            reset_ARCC.className = 'filterlabel';
+            reset_ARCC.onclick = function() {
+                var options = document.getElementById("sel_ARCC").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ARCC.appendChild(reset_ARCC);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_Mun_Name = document.createElement('div');
+            div_Mun_Name.id = "div_Mun_Name";
+            div_Mun_Name.className= "filterselect";
+            document.getElementById("menu").appendChild(div_Mun_Name);
+            sel_Mun_Name = document.createElement('select');
+            sel_Mun_Name.multiple = true;
+            sel_Mun_Name.size = 10;
+            sel_Mun_Name.id = "sel_Mun_Name";
+            var Mun_Name_options_str = "<option value='' unselected></option>";
+            sel_Mun_Name.onchange = function(){filterFunc()};
+            Mun_Name_options_str  += '<option value="BACUNGAN (Leon T. Postigo)">BACUNGAN (Leon T. Postigo)</option>';
+            Mun_Name_options_str  += '<option value="BALIGUIAN">BALIGUIAN</option>';
+            Mun_Name_options_str  += '<option value="DAPITAN CITY">DAPITAN CITY</option>';
+            Mun_Name_options_str  += '<option value="DIPOLOG CITY (Capital)">DIPOLOG CITY (Capital)</option>';
+            Mun_Name_options_str  += '<option value="GODOD">GODOD</option>';
+            Mun_Name_options_str  += '<option value="GUTALAC">GUTALAC</option>';
+            Mun_Name_options_str  += '<option value="JOSE DALMAN (PONOT)">JOSE DALMAN (PONOT)</option>';
+            Mun_Name_options_str  += '<option value="KALAWIT">KALAWIT</option>';
+            Mun_Name_options_str  += '<option value="KATIPUNAN">KATIPUNAN</option>';
+            Mun_Name_options_str  += '<option value="LA LIBERTAD">LA LIBERTAD</option>';
+            Mun_Name_options_str  += '<option value="LABASON">LABASON</option>';
+            Mun_Name_options_str  += '<option value="LILOY">LILOY</option>';
+            Mun_Name_options_str  += '<option value="MANUKAN">MANUKAN</option>';
+            Mun_Name_options_str  += '<option value="MUTIA">MUTIA</option>';
+            Mun_Name_options_str  += '<option value="PIÑAN (NEW PIÑAN)">PIÑAN (NEW PIÑAN)</option>';
+            Mun_Name_options_str  += '<option value="POLANCO">POLANCO</option>';
+            Mun_Name_options_str  += '<option value="PRES. MANUEL A. ROXAS">PRES. MANUEL A. ROXAS</option>';
+            Mun_Name_options_str  += '<option value="RIZAL">RIZAL</option>';
+            Mun_Name_options_str  += '<option value="SALUG">SALUG</option>';
+            Mun_Name_options_str  += '<option value="SERGIO OSMEÑA SR.">SERGIO OSMEÑA SR.</option>';
+            Mun_Name_options_str  += '<option value="SIAYAN">SIAYAN</option>';
+            Mun_Name_options_str  += '<option value="SIBUCO">SIBUCO</option>';
+            Mun_Name_options_str  += '<option value="SIBUTAD">SIBUTAD</option>';
+            Mun_Name_options_str  += '<option value="SINDANGAN">SINDANGAN</option>';
+            Mun_Name_options_str  += '<option value="SIOCON">SIOCON</option>';
+            Mun_Name_options_str  += '<option value="SIRAWAI">SIRAWAI</option>';
+            Mun_Name_options_str  += '<option value="TAMPILISAN">TAMPILISAN</option>';
+            sel_Mun_Name.innerHTML = Mun_Name_options_str;
+            div_Mun_Name.appendChild(sel_Mun_Name);
+            var lab_Mun_Name = document.createElement('div');
+            lab_Mun_Name.innerHTML = 'Mun_Name';
+            lab_Mun_Name.className = 'filterlabel';
+            div_Mun_Name.appendChild(lab_Mun_Name);
+            var reset_Mun_Name = document.createElement('div');
+            reset_Mun_Name.innerHTML = 'clear filter';
+            reset_Mun_Name.className = 'filterlabel';
+            reset_Mun_Name.onclick = function() {
+                var options = document.getElementById("sel_Mun_Name").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_Mun_Name.appendChild(reset_Mun_Name);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ARC = document.createElement('div');
+            div_ARC.id = "div_ARC";
+            div_ARC.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARC);
+            sel_ARC = document.createElement('select');
+            sel_ARC.multiple = true;
+            sel_ARC.size = 10;
+            sel_ARC.id = "sel_ARC";
+            var ARC_options_str = "<option value='' unselected></option>";
+            sel_ARC.onchange = function(){filterFunc()};
+            ARC_options_str  += '<option value="ARSB">ARSB</option>';
+            ARC_options_str  += '<option value="BACUNGAN">BACUNGAN</option>';
+            ARC_options_str  += '<option value="BAMARODECA">BAMARODECA</option>';
+            ARC_options_str  += '<option value="BANGANON (EXPANDED)">BANGANON (EXPANDED)</option>';
+            ARC_options_str  += '<option value="BAPOPA (EXPANDED)">BAPOPA (EXPANDED)</option>';
+            ARC_options_str  += '<option value="BARCELONA (EXPANDED)">BARCELONA (EXPANDED)</option>';
+            ARC_options_str  += '<option value="CAMUL GROWTH">CAMUL GROWTH</option>';
+            ARC_options_str  += '<option value="CHRISLAM">CHRISLAM</option>';
+            ARC_options_str  += '<option value="CHRISMUSU">CHRISMUSU</option>';
+            ARC_options_str  += '<option value="D&apos;VILLAGE">D&apos;VILLAGE</option>';
+            ARC_options_str  += '<option value="DATUMAMI">DATUMAMI</option>';
+            ARC_options_str  += '<option value="DCS3 (EXPANDED)">DCS3 (EXPANDED)</option>';
+            ARC_options_str  += '<option value="GBL">GBL</option>';
+            ARC_options_str  += '<option value="GEMMS">GEMMS</option>';
+            ARC_options_str  += '<option value="GLIVS">GLIVS</option>';
+            ARC_options_str  += '<option value="GREENFIELD">GREENFIELD</option>';
+            ARC_options_str  += '<option value="GUMBUEBAS SARC">GUMBUEBAS SARC</option>';
+            ARC_options_str  += '<option value="HILLSIDE">HILLSIDE</option>';
+            ARC_options_str  += '<option value="JOAQUIN MACIAS">JOAQUIN MACIAS</option>';
+            ARC_options_str  += '<option value="JOLAMIPAMAN">JOLAMIPAMAN</option>';
+            ARC_options_str  += '<option value="KAUSWAGAN">KAUSWAGAN</option>';
+            ARC_options_str  += '<option value="LA UNION (EXPANDED)">LA UNION (EXPANDED)</option>';
+            ARC_options_str  += '<option value="LA VESTIDA">LA VESTIDA</option>';
+            ARC_options_str  += '<option value="LABRADOR (EXPANDED)">LABRADOR (EXPANDED)</option>';
+            ARC_options_str  += '<option value="LAGAG">LAGAG</option>';
+            ARC_options_str  += '<option value="LANGATIAN (EXPANDED)">LANGATIAN (EXPANDED)</option>';
+            ARC_options_str  += '<option value="LANNDS">LANNDS</option>';
+            ARC_options_str  += '<option value="LAPAYAN BAJA (EXPANDED)">LAPAYAN BAJA (EXPANDED)</option>';
+            ARC_options_str  += '<option value="LOWER GUMAY (EXPANDED)">LOWER GUMAY (EXPANDED)</option>';
+            ARC_options_str  += '<option value="LOWER MALALA">LOWER MALALA</option>';
+            ARC_options_str  += '<option value="LUZSITE (EXPANDED)">LUZSITE (EXPANDED)</option>';
+            ARC_options_str  += '<option value="MABUHAY">MABUHAY</option>';
+            ARC_options_str  += '<option value="MALLTAMA">MALLTAMA</option>';
+            ARC_options_str  += '<option value="MANUKAN EAST">MANUKAN EAST</option>';
+            ARC_options_str  += '<option value="MARCELO">MARCELO</option>';
+            ARC_options_str  += '<option value="MNSR">MNSR</option>';
+            ARC_options_str  += '<option value="Non-ARC">Non-ARC</option>';
+            ARC_options_str  += '<option value="OSUKAN (EXPANDED)">OSUKAN (EXPANDED)</option>';
+            ARC_options_str  += '<option value="PANABUTAN (EXPANDED)">PANABUTAN (EXPANDED)</option>';
+            ARC_options_str  += '<option value="PLUMPS">PLUMPS</option>';
+            ARC_options_str  += '<option value="POSSADELBA">POSSADELBA</option>';
+            ARC_options_str  += '<option value="RIVERSIDE">RIVERSIDE</option>';
+            ARC_options_str  += '<option value="Rubber Stump">Rubber Stump</option>';
+            ARC_options_str  += '<option value="SANMITIBU (EXPANDED)">SANMITIBU (EXPANDED)</option>';
+            ARC_options_str  += '<option value="SBLP">SBLP</option>';
+            ARC_options_str  += '<option value="SEPANSUPA">SEPANSUPA</option>';
+            ARC_options_str  += '<option value="SIARI VALLEY ESTATE">SIARI VALLEY ESTATE</option>';
+            ARC_options_str  += '<option value="SIAYAN EAST">SIAYAN EAST</option>';
+            ARC_options_str  += '<option value="SIAYAN WEST">SIAYAN WEST</option>';
+            ARC_options_str  += '<option value="SIBUCO">SIBUCO</option>';
+            ARC_options_str  += '<option value="SIGILO (EXPANDED)">SIGILO (EXPANDED)</option>';
+            ARC_options_str  += '<option value="SILVESTRE CABRAL (EXPANDED)">SILVESTRE CABRAL (EXPANDED)</option>';
+            ARC_options_str  += '<option value="TRIPLE "M" S (EXPANDED)">TRIPLE "M" S (EXPANDED)</option>';
+            ARC_options_str  += '<option value="TRIPLE "S"">TRIPLE "S"</option>';
+            ARC_options_str  += '<option value="VILLACITA">VILLACITA</option>';
+            sel_ARC.innerHTML = ARC_options_str;
+            div_ARC.appendChild(sel_ARC);
+            var lab_ARC = document.createElement('div');
+            lab_ARC.innerHTML = 'ARC';
+            lab_ARC.className = 'filterlabel';
+            div_ARC.appendChild(lab_ARC);
+            var reset_ARC = document.createElement('div');
+            reset_ARC.innerHTML = 'clear filter';
+            reset_ARC.className = 'filterlabel';
+            reset_ARC.onclick = function() {
+                var options = document.getElementById("sel_ARC").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ARC.appendChild(reset_ARC);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ARCCLASS = document.createElement('div');
+            div_ARCCLASS.id = "div_ARCCLASS";
+            div_ARCCLASS.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARCCLASS);
+            sel_ARCCLASS = document.createElement('select');
+            sel_ARCCLASS.multiple = true;
+            sel_ARCCLASS.size = 7;
+            sel_ARCCLASS.id = "sel_ARCCLASS";
+            var ARCCLASS_options_str = "<option value='' unselected></option>";
+            sel_ARCCLASS.onchange = function(){filterFunc()};
+            ARCCLASS_options_str  += '<option value="Low Prime">Low Prime</option>';
+            ARCCLASS_options_str  += '<option value="Low Satellite">Low Satellite</option>';
+            ARCCLASS_options_str  += '<option value="Low Semi-Prime">Low Semi-Prime</option>';
+            ARCCLASS_options_str  += '<option value="Medium Prime">Medium Prime</option>';
+            ARCCLASS_options_str  += '<option value="Medium Satellite">Medium Satellite</option>';
+            ARCCLASS_options_str  += '<option value="Medium Semi-Prime">Medium Semi-Prime</option>';
+            ARCCLASS_options_str  += '<option value="Unclassified">Unclassified</option>';
+            sel_ARCCLASS.innerHTML = ARCCLASS_options_str;
+            div_ARCCLASS.appendChild(sel_ARCCLASS);
+            var lab_ARCCLASS = document.createElement('div');
+            lab_ARCCLASS.innerHTML = 'ARC CLASS';
+            lab_ARCCLASS.className = 'filterlabel';
+            div_ARCCLASS.appendChild(lab_ARCCLASS);
+            var reset_ARCCLASS = document.createElement('div');
+            reset_ARCCLASS.innerHTML = 'clear filter';
+            reset_ARCCLASS.className = 'filterlabel';
+            reset_ARCCLASS.onclick = function() {
+                var options = document.getElementById("sel_ARCCLASS").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ARCCLASS.appendChild(reset_ARCCLASS);
+        </script>
+    </body>
+</html>
