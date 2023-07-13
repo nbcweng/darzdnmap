@@ -111,24 +111,24 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">Reg_Name</th>\
-                        <td>' + (feature.properties['Reg_Name'] !== null ? autolinker.link(feature.properties['Reg_Name'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">REGION</th>\
+                        <td>' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Pro_Name</th>\
-                        <td>' + (feature.properties['Pro_Name'] !== null ? autolinker.link(feature.properties['Pro_Name'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">PROVINCE</th>\
+                        <td>' + (feature.properties['PROVINCE'] !== null ? autolinker.link(feature.properties['PROVINCE'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Mun_Name</th>\
-                        <td>' + (feature.properties['Mun_Name'] !== null ? autolinker.link(feature.properties['Mun_Name'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">MUN_CITY</th>\
+                        <td>' + (feature.properties['MUN_CITY'] !== null ? autolinker.link(feature.properties['MUN_CITY'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">Bgy_Name</th>\
-                        <td>' + (feature.properties['Bgy_Name'] !== null ? autolinker.link(feature.properties['Bgy_Name'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">BARANGAY</th>\
+                        <td>' + (feature.properties['BARANGAY'] !== null ? autolinker.link(feature.properties['BARANGAY'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">ARC</th>\
-                        <td>' + (feature.properties['ARC'] !== null ? autolinker.link(feature.properties['ARC'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">ARC NAME</th>\
+                        <td>' + (feature.properties['ARC NAME'] !== null ? autolinker.link(feature.properties['ARC NAME'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">ARC CLASS</th>\
@@ -143,7 +143,7 @@
         }
 
         function style_zdn_1_0(feature) {
-            switch(String(feature.properties['Mun_Name'])) {
+            switch(String(feature.properties['MUN_CITY'])) {
                 case 'BACUNGAN (Leon T. Postigo)':
                     return {
                 pane: 'pane_zdn_1',
@@ -155,7 +155,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(84,227,208,1.0)',
+                fillColor: 'rgba(197,114,214,1.0)',
                 interactive: true,
             }
                     break;
@@ -170,7 +170,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(110,187,220,1.0)',
+                fillColor: 'rgba(55,223,170,1.0)',
                 interactive: true,
             }
                     break;
@@ -185,7 +185,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(149,135,224,1.0)',
+                fillColor: 'rgba(120,217,98,1.0)',
                 interactive: true,
             }
                     break;
@@ -200,7 +200,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(235,228,98,1.0)',
+                fillColor: 'rgba(212,167,115,1.0)',
                 interactive: true,
             }
                     break;
@@ -215,7 +215,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(228,22,91,1.0)',
+                fillColor: 'rgba(217,20,165,1.0)',
                 interactive: true,
             }
                     break;
@@ -230,7 +230,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(70,220,135,1.0)',
+                fillColor: 'rgba(239,37,101,1.0)',
                 interactive: true,
             }
                     break;
@@ -245,7 +245,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(174,208,115,1.0)',
+                fillColor: 'rgba(91,220,96,1.0)',
                 interactive: true,
             }
                     break;
@@ -260,7 +260,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(97,239,130,1.0)',
+                fillColor: 'rgba(226,220,54,1.0)',
                 interactive: true,
             }
                     break;
@@ -275,7 +275,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(239,160,126,1.0)',
+                fillColor: 'rgba(62,29,229,1.0)',
                 interactive: true,
             }
                     break;
@@ -290,7 +290,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(182,108,200,1.0)',
+                fillColor: 'rgba(226,122,70,1.0)',
                 interactive: true,
             }
                     break;
@@ -305,7 +305,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(139,228,140,1.0)',
+                fillColor: 'rgba(106,133,216,1.0)',
                 interactive: true,
             }
                     break;
@@ -320,7 +320,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(179,206,44,1.0)',
+                fillColor: 'rgba(208,108,118,1.0)',
                 interactive: true,
             }
                     break;
@@ -335,7 +335,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(88,222,54,1.0)',
+                fillColor: 'rgba(122,205,70,1.0)',
                 interactive: true,
             }
                     break;
@@ -350,7 +350,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(123,211,180,1.0)',
+                fillColor: 'rgba(124,186,215,1.0)',
                 interactive: true,
             }
                     break;
@@ -365,7 +365,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(218,36,20,1.0)',
+                fillColor: 'rgba(99,219,155,1.0)',
                 interactive: true,
             }
                     break;
@@ -380,7 +380,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(225,54,148,1.0)',
+                fillColor: 'rgba(25,201,220,1.0)',
                 interactive: true,
             }
                     break;
@@ -395,7 +395,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(210,72,88,1.0)',
+                fillColor: 'rgba(81,225,211,1.0)',
                 interactive: true,
             }
                     break;
@@ -410,7 +410,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(222,57,184,1.0)',
+                fillColor: 'rgba(176,81,236,1.0)',
                 interactive: true,
             }
                     break;
@@ -425,7 +425,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(132,157,220,1.0)',
+                fillColor: 'rgba(215,106,210,1.0)',
                 interactive: true,
             }
                     break;
@@ -440,7 +440,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(128,167,210,1.0)',
+                fillColor: 'rgba(78,227,116,1.0)',
                 interactive: true,
             }
                     break;
@@ -455,7 +455,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(43,190,203,1.0)',
+                fillColor: 'rgba(47,53,234,1.0)',
                 interactive: true,
             }
                     break;
@@ -470,7 +470,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(135,76,236,1.0)',
+                fillColor: 'rgba(230,74,157,1.0)',
                 interactive: true,
             }
                     break;
@@ -485,7 +485,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(116,221,41,1.0)',
+                fillColor: 'rgba(118,61,210,1.0)',
                 interactive: true,
             }
                     break;
@@ -500,7 +500,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(76,85,204,1.0)',
+                fillColor: 'rgba(229,189,67,1.0)',
                 interactive: true,
             }
                     break;
@@ -515,7 +515,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(230,110,228,1.0)',
+                fillColor: 'rgba(206,102,88,1.0)',
                 interactive: true,
             }
                     break;
@@ -530,7 +530,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(163,109,202,1.0)',
+                fillColor: 'rgba(191,222,53,1.0)',
                 interactive: true,
             }
                     break;
@@ -545,7 +545,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(222,183,75,1.0)',
+                fillColor: 'rgba(95,163,240,1.0)',
                 interactive: true,
             }
                     break;
@@ -560,7 +560,7 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(227,170,109,1.0)',
+                fillColor: 'rgba(128,204,15,1.0)',
                 interactive: true,
             }
                     break;
@@ -610,7 +610,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"ARCC": "str","Mun_Name": "str","ARC": "str","ARC CLASS": "str"};
+        var Filters = {"ARCC": "str","MUN_CITY": "str","ARC NAME": "str","ARC CLASS": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -738,144 +738,145 @@
             div_ARCC.appendChild(reset_ARCC);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_Mun_Name = document.createElement('div');
-            div_Mun_Name.id = "div_Mun_Name";
-            div_Mun_Name.className= "filterselect";
-            document.getElementById("menu").appendChild(div_Mun_Name);
-            sel_Mun_Name = document.createElement('select');
-            sel_Mun_Name.multiple = true;
-            sel_Mun_Name.size = 10;
-            sel_Mun_Name.id = "sel_Mun_Name";
-            var Mun_Name_options_str = "<option value='' unselected></option>";
-            sel_Mun_Name.onchange = function(){filterFunc()};
-            Mun_Name_options_str  += '<option value="BACUNGAN (Leon T. Postigo)">BACUNGAN (Leon T. Postigo)</option>';
-            Mun_Name_options_str  += '<option value="BALIGUIAN">BALIGUIAN</option>';
-            Mun_Name_options_str  += '<option value="DAPITAN CITY">DAPITAN CITY</option>';
-            Mun_Name_options_str  += '<option value="DIPOLOG CITY (Capital)">DIPOLOG CITY (Capital)</option>';
-            Mun_Name_options_str  += '<option value="GODOD">GODOD</option>';
-            Mun_Name_options_str  += '<option value="GUTALAC">GUTALAC</option>';
-            Mun_Name_options_str  += '<option value="JOSE DALMAN (PONOT)">JOSE DALMAN (PONOT)</option>';
-            Mun_Name_options_str  += '<option value="KALAWIT">KALAWIT</option>';
-            Mun_Name_options_str  += '<option value="KATIPUNAN">KATIPUNAN</option>';
-            Mun_Name_options_str  += '<option value="LA LIBERTAD">LA LIBERTAD</option>';
-            Mun_Name_options_str  += '<option value="LABASON">LABASON</option>';
-            Mun_Name_options_str  += '<option value="LILOY">LILOY</option>';
-            Mun_Name_options_str  += '<option value="MANUKAN">MANUKAN</option>';
-            Mun_Name_options_str  += '<option value="MUTIA">MUTIA</option>';
-            Mun_Name_options_str  += '<option value="PIÑAN (NEW PIÑAN)">PIÑAN (NEW PIÑAN)</option>';
-            Mun_Name_options_str  += '<option value="POLANCO">POLANCO</option>';
-            Mun_Name_options_str  += '<option value="PRES. MANUEL A. ROXAS">PRES. MANUEL A. ROXAS</option>';
-            Mun_Name_options_str  += '<option value="RIZAL">RIZAL</option>';
-            Mun_Name_options_str  += '<option value="SALUG">SALUG</option>';
-            Mun_Name_options_str  += '<option value="SERGIO OSMEÑA SR.">SERGIO OSMEÑA SR.</option>';
-            Mun_Name_options_str  += '<option value="SIAYAN">SIAYAN</option>';
-            Mun_Name_options_str  += '<option value="SIBUCO">SIBUCO</option>';
-            Mun_Name_options_str  += '<option value="SIBUTAD">SIBUTAD</option>';
-            Mun_Name_options_str  += '<option value="SINDANGAN">SINDANGAN</option>';
-            Mun_Name_options_str  += '<option value="SIOCON">SIOCON</option>';
-            Mun_Name_options_str  += '<option value="SIRAWAI">SIRAWAI</option>';
-            Mun_Name_options_str  += '<option value="TAMPILISAN">TAMPILISAN</option>';
-            sel_Mun_Name.innerHTML = Mun_Name_options_str;
-            div_Mun_Name.appendChild(sel_Mun_Name);
-            var lab_Mun_Name = document.createElement('div');
-            lab_Mun_Name.innerHTML = 'Mun_Name';
-            lab_Mun_Name.className = 'filterlabel';
-            div_Mun_Name.appendChild(lab_Mun_Name);
-            var reset_Mun_Name = document.createElement('div');
-            reset_Mun_Name.innerHTML = 'clear filter';
-            reset_Mun_Name.className = 'filterlabel';
-            reset_Mun_Name.onclick = function() {
-                var options = document.getElementById("sel_Mun_Name").options;
+            var div_MUN_CITY = document.createElement('div');
+            div_MUN_CITY.id = "div_MUN_CITY";
+            div_MUN_CITY.className= "filterselect";
+            document.getElementById("menu").appendChild(div_MUN_CITY);
+            sel_MUN_CITY = document.createElement('select');
+            sel_MUN_CITY.multiple = true;
+            sel_MUN_CITY.size = 10;
+            sel_MUN_CITY.id = "sel_MUN_CITY";
+            var MUN_CITY_options_str = "<option value='' unselected></option>";
+            sel_MUN_CITY.onchange = function(){filterFunc()};
+            MUN_CITY_options_str  += '<option value="BACUNGAN (Leon T. Postigo)">BACUNGAN (Leon T. Postigo)</option>';
+            MUN_CITY_options_str  += '<option value="BALIGUIAN">BALIGUIAN</option>';
+            MUN_CITY_options_str  += '<option value="DAPITAN CITY">DAPITAN CITY</option>';
+            MUN_CITY_options_str  += '<option value="DIPOLOG CITY (Capital)">DIPOLOG CITY (Capital)</option>';
+            MUN_CITY_options_str  += '<option value="GODOD">GODOD</option>';
+            MUN_CITY_options_str  += '<option value="GUTALAC">GUTALAC</option>';
+            MUN_CITY_options_str  += '<option value="JOSE DALMAN (PONOT)">JOSE DALMAN (PONOT)</option>';
+            MUN_CITY_options_str  += '<option value="KALAWIT">KALAWIT</option>';
+            MUN_CITY_options_str  += '<option value="KATIPUNAN">KATIPUNAN</option>';
+            MUN_CITY_options_str  += '<option value="LA LIBERTAD">LA LIBERTAD</option>';
+            MUN_CITY_options_str  += '<option value="LABASON">LABASON</option>';
+            MUN_CITY_options_str  += '<option value="LILOY">LILOY</option>';
+            MUN_CITY_options_str  += '<option value="MANUKAN">MANUKAN</option>';
+            MUN_CITY_options_str  += '<option value="MUTIA">MUTIA</option>';
+            MUN_CITY_options_str  += '<option value="PIÑAN (NEW PIÑAN)">PIÑAN (NEW PIÑAN)</option>';
+            MUN_CITY_options_str  += '<option value="POLANCO">POLANCO</option>';
+            MUN_CITY_options_str  += '<option value="PRES. MANUEL A. ROXAS">PRES. MANUEL A. ROXAS</option>';
+            MUN_CITY_options_str  += '<option value="RIZAL">RIZAL</option>';
+            MUN_CITY_options_str  += '<option value="SALUG">SALUG</option>';
+            MUN_CITY_options_str  += '<option value="SERGIO OSMEÑA SR.">SERGIO OSMEÑA SR.</option>';
+            MUN_CITY_options_str  += '<option value="SIAYAN">SIAYAN</option>';
+            MUN_CITY_options_str  += '<option value="SIBUCO">SIBUCO</option>';
+            MUN_CITY_options_str  += '<option value="SIBUTAD">SIBUTAD</option>';
+            MUN_CITY_options_str  += '<option value="SINDANGAN">SINDANGAN</option>';
+            MUN_CITY_options_str  += '<option value="SIOCON">SIOCON</option>';
+            MUN_CITY_options_str  += '<option value="SIRAWAI">SIRAWAI</option>';
+            MUN_CITY_options_str  += '<option value="TAMPILISAN">TAMPILISAN</option>';
+            sel_MUN_CITY.innerHTML = MUN_CITY_options_str;
+            div_MUN_CITY.appendChild(sel_MUN_CITY);
+            var lab_MUN_CITY = document.createElement('div');
+            lab_MUN_CITY.innerHTML = 'MUN_CITY';
+            lab_MUN_CITY.className = 'filterlabel';
+            div_MUN_CITY.appendChild(lab_MUN_CITY);
+            var reset_MUN_CITY = document.createElement('div');
+            reset_MUN_CITY.innerHTML = 'clear filter';
+            reset_MUN_CITY.className = 'filterlabel';
+            reset_MUN_CITY.onclick = function() {
+                var options = document.getElementById("sel_MUN_CITY").options;
                 for (var i=0; i < options.length; i++) {
                     options[i].selected = false;
                 }
                 filterFunc();
             };
-            div_Mun_Name.appendChild(reset_Mun_Name);
+            div_MUN_CITY.appendChild(reset_MUN_CITY);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_ARC = document.createElement('div');
-            div_ARC.id = "div_ARC";
-            div_ARC.className= "filterselect";
-            document.getElementById("menu").appendChild(div_ARC);
-            sel_ARC = document.createElement('select');
-            sel_ARC.multiple = true;
-            sel_ARC.size = 10;
-            sel_ARC.id = "sel_ARC";
-            var ARC_options_str = "<option value='' unselected></option>";
-            sel_ARC.onchange = function(){filterFunc()};
-            ARC_options_str  += '<option value="ARSB">ARSB</option>';
-            ARC_options_str  += '<option value="BACUNGAN">BACUNGAN</option>';
-            ARC_options_str  += '<option value="BAMARODECA">BAMARODECA</option>';
-            ARC_options_str  += '<option value="BANGANON (EXPANDED)">BANGANON (EXPANDED)</option>';
-            ARC_options_str  += '<option value="BAPOPA (EXPANDED)">BAPOPA (EXPANDED)</option>';
-            ARC_options_str  += '<option value="BARCELONA (EXPANDED)">BARCELONA (EXPANDED)</option>';
-            ARC_options_str  += '<option value="CAMUL GROWTH">CAMUL GROWTH</option>';
-            ARC_options_str  += '<option value="CHRISLAM">CHRISLAM</option>';
-            ARC_options_str  += '<option value="CHRISMUSU">CHRISMUSU</option>';
-            ARC_options_str  += '<option value="D&apos;VILLAGE">D&apos;VILLAGE</option>';
-            ARC_options_str  += '<option value="DATUMAMI">DATUMAMI</option>';
-            ARC_options_str  += '<option value="DCS3 (EXPANDED)">DCS3 (EXPANDED)</option>';
-            ARC_options_str  += '<option value="GBL">GBL</option>';
-            ARC_options_str  += '<option value="GEMMS">GEMMS</option>';
-            ARC_options_str  += '<option value="GLIVS">GLIVS</option>';
-            ARC_options_str  += '<option value="GREENFIELD">GREENFIELD</option>';
-            ARC_options_str  += '<option value="GUMBUEBAS SARC">GUMBUEBAS SARC</option>';
-            ARC_options_str  += '<option value="HILLSIDE">HILLSIDE</option>';
-            ARC_options_str  += '<option value="JOAQUIN MACIAS">JOAQUIN MACIAS</option>';
-            ARC_options_str  += '<option value="JOLAMIPAMAN">JOLAMIPAMAN</option>';
-            ARC_options_str  += '<option value="KAUSWAGAN">KAUSWAGAN</option>';
-            ARC_options_str  += '<option value="LA UNION (EXPANDED)">LA UNION (EXPANDED)</option>';
-            ARC_options_str  += '<option value="LA VESTIDA">LA VESTIDA</option>';
-            ARC_options_str  += '<option value="LABRADOR (EXPANDED)">LABRADOR (EXPANDED)</option>';
-            ARC_options_str  += '<option value="LAGAG">LAGAG</option>';
-            ARC_options_str  += '<option value="LANGATIAN (EXPANDED)">LANGATIAN (EXPANDED)</option>';
-            ARC_options_str  += '<option value="LANNDS">LANNDS</option>';
-            ARC_options_str  += '<option value="LAPAYAN BAJA (EXPANDED)">LAPAYAN BAJA (EXPANDED)</option>';
-            ARC_options_str  += '<option value="LOWER GUMAY (EXPANDED)">LOWER GUMAY (EXPANDED)</option>';
-            ARC_options_str  += '<option value="LOWER MALALA">LOWER MALALA</option>';
-            ARC_options_str  += '<option value="LUZSITE (EXPANDED)">LUZSITE (EXPANDED)</option>';
-            ARC_options_str  += '<option value="MABUHAY">MABUHAY</option>';
-            ARC_options_str  += '<option value="MALLTAMA">MALLTAMA</option>';
-            ARC_options_str  += '<option value="MANUKAN EAST">MANUKAN EAST</option>';
-            ARC_options_str  += '<option value="MARCELO">MARCELO</option>';
-            ARC_options_str  += '<option value="MNSR">MNSR</option>';
-            ARC_options_str  += '<option value="Non-ARC">Non-ARC</option>';
-            ARC_options_str  += '<option value="OSUKAN (EXPANDED)">OSUKAN (EXPANDED)</option>';
-            ARC_options_str  += '<option value="PANABUTAN (EXPANDED)">PANABUTAN (EXPANDED)</option>';
-            ARC_options_str  += '<option value="PLUMPS">PLUMPS</option>';
-            ARC_options_str  += '<option value="POSSADELBA">POSSADELBA</option>';
-            ARC_options_str  += '<option value="RIVERSIDE">RIVERSIDE</option>';
-            ARC_options_str  += '<option value="Rubber Stump">Rubber Stump</option>';
-            ARC_options_str  += '<option value="SANMITIBU (EXPANDED)">SANMITIBU (EXPANDED)</option>';
-            ARC_options_str  += '<option value="SBLP">SBLP</option>';
-            ARC_options_str  += '<option value="SEPANSUPA">SEPANSUPA</option>';
-            ARC_options_str  += '<option value="SIARI VALLEY ESTATE">SIARI VALLEY ESTATE</option>';
-            ARC_options_str  += '<option value="SIAYAN EAST">SIAYAN EAST</option>';
-            ARC_options_str  += '<option value="SIAYAN WEST">SIAYAN WEST</option>';
-            ARC_options_str  += '<option value="SIBUCO">SIBUCO</option>';
-            ARC_options_str  += '<option value="SIGILO (EXPANDED)">SIGILO (EXPANDED)</option>';
-            ARC_options_str  += '<option value="SILVESTRE CABRAL (EXPANDED)">SILVESTRE CABRAL (EXPANDED)</option>';
-            ARC_options_str  += '<option value="TRIPLE "M" S (EXPANDED)">TRIPLE "M" S (EXPANDED)</option>';
-            ARC_options_str  += '<option value="TRIPLE "S"">TRIPLE "S"</option>';
-            ARC_options_str  += '<option value="VILLACITA">VILLACITA</option>';
-            sel_ARC.innerHTML = ARC_options_str;
-            div_ARC.appendChild(sel_ARC);
-            var lab_ARC = document.createElement('div');
-            lab_ARC.innerHTML = 'ARC';
-            lab_ARC.className = 'filterlabel';
-            div_ARC.appendChild(lab_ARC);
-            var reset_ARC = document.createElement('div');
-            reset_ARC.innerHTML = 'clear filter';
-            reset_ARC.className = 'filterlabel';
-            reset_ARC.onclick = function() {
-                var options = document.getElementById("sel_ARC").options;
+            var div_ARCNAME = document.createElement('div');
+            div_ARCNAME.id = "div_ARCNAME";
+            div_ARCNAME.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARCNAME);
+            sel_ARCNAME = document.createElement('select');
+            sel_ARCNAME.multiple = true;
+            sel_ARCNAME.size = 10;
+            sel_ARCNAME.id = "sel_ARCNAME";
+            var ARCNAME_options_str = "<option value='' unselected></option>";
+            sel_ARCNAME.onchange = function(){filterFunc()};
+            ARCNAME_options_str  += '<option value="ARSB">ARSB</option>';
+            ARCNAME_options_str  += '<option value="BACUNGAN">BACUNGAN</option>';
+            ARCNAME_options_str  += '<option value="BAMARODECA">BAMARODECA</option>';
+            ARCNAME_options_str  += '<option value="BANGANON (EXPANDED)">BANGANON (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="BAPOPA (EXPANDED)">BAPOPA (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="BARCELONA (EXPANDED)">BARCELONA (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="CAMUL GROWTH">CAMUL GROWTH</option>';
+            ARCNAME_options_str  += '<option value="CHRISLAM">CHRISLAM</option>';
+            ARCNAME_options_str  += '<option value="CHRISMUSU">CHRISMUSU</option>';
+            ARCNAME_options_str  += '<option value="D&apos;VILLAGE">D&apos;VILLAGE</option>';
+            ARCNAME_options_str  += '<option value="DATUMAMI">DATUMAMI</option>';
+            ARCNAME_options_str  += '<option value="DCS3 (EXPANDED)">DCS3 (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="GBL">GBL</option>';
+            ARCNAME_options_str  += '<option value="GEMMS">GEMMS</option>';
+            ARCNAME_options_str  += '<option value="GLIVS">GLIVS</option>';
+            ARCNAME_options_str  += '<option value="GREENFIELD">GREENFIELD</option>';
+            ARCNAME_options_str  += '<option value="GUMBUEBAS SARC">GUMBUEBAS SARC</option>';
+            ARCNAME_options_str  += '<option value="HILLSIDE">HILLSIDE</option>';
+            ARCNAME_options_str  += '<option value="JOAQUIN MACIAS">JOAQUIN MACIAS</option>';
+            ARCNAME_options_str  += '<option value="JOLAMIPAMAN">JOLAMIPAMAN</option>';
+            ARCNAME_options_str  += '<option value="KAUSWAGAN">KAUSWAGAN</option>';
+            ARCNAME_options_str  += '<option value="LA UNION (EXPANDED)">LA UNION (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="LA VESTIDA">LA VESTIDA</option>';
+            ARCNAME_options_str  += '<option value="LABRADOR (EXPANDED)">LABRADOR (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="LAGAG">LAGAG</option>';
+            ARCNAME_options_str  += '<option value="LANGATIAN (EXPANDED)">LANGATIAN (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="LANNDS">LANNDS</option>';
+            ARCNAME_options_str  += '<option value="LAPAYAN BAJA (EXPANDED)">LAPAYAN BAJA (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="LOWER GUMAY (EXPANDED)">LOWER GUMAY (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="LOWER MALALA">LOWER MALALA</option>';
+            ARCNAME_options_str  += '<option value="LUZSITE (EXPANDED)">LUZSITE (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="MABUHAY">MABUHAY</option>';
+            ARCNAME_options_str  += '<option value="MALLTAMA">MALLTAMA</option>';
+            ARCNAME_options_str  += '<option value="MANUKAN EAST">MANUKAN EAST</option>';
+            ARCNAME_options_str  += '<option value="MARCELO">MARCELO</option>';
+            ARCNAME_options_str  += '<option value="MNSR">MNSR</option>';
+            ARCNAME_options_str  += '<option value="Non-ARC">Non-ARC</option>';
+            ARCNAME_options_str  += '<option value="OSUKAN (EXPANDED)">OSUKAN (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="PANABUTAN (EXPANDED)">PANABUTAN (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="PANSITU">PANSITU</option>';
+            ARCNAME_options_str  += '<option value="PLUMPS">PLUMPS</option>';
+            ARCNAME_options_str  += '<option value="POSSADELBA">POSSADELBA</option>';
+            ARCNAME_options_str  += '<option value="RIVERSIDE">RIVERSIDE</option>';
+            ARCNAME_options_str  += '<option value="Rubber Stump">Rubber Stump</option>';
+            ARCNAME_options_str  += '<option value="SANMITIBU (EXPANDED)">SANMITIBU (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="SBLP">SBLP</option>';
+            ARCNAME_options_str  += '<option value="SEPANSUPA">SEPANSUPA</option>';
+            ARCNAME_options_str  += '<option value="SIARI VALLEY ESTATE">SIARI VALLEY ESTATE</option>';
+            ARCNAME_options_str  += '<option value="SIAYAN EAST">SIAYAN EAST</option>';
+            ARCNAME_options_str  += '<option value="SIAYAN WEST">SIAYAN WEST</option>';
+            ARCNAME_options_str  += '<option value="SIBUCO">SIBUCO</option>';
+            ARCNAME_options_str  += '<option value="SIGILO (EXPANDED)">SIGILO (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="SILVESTRE CABRAL (EXPANDED)">SILVESTRE CABRAL (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="TRIPLE M S (EXPANDED)">TRIPLE M S (EXPANDED)</option>';
+            ARCNAME_options_str  += '<option value="TRIPLE S">TRIPLE S</option>';
+            ARCNAME_options_str  += '<option value="VILLACITA">VILLACITA</option>';
+            sel_ARCNAME.innerHTML = ARCNAME_options_str;
+            div_ARCNAME.appendChild(sel_ARCNAME);
+            var lab_ARCNAME = document.createElement('div');
+            lab_ARCNAME.innerHTML = 'ARC NAME';
+            lab_ARCNAME.className = 'filterlabel';
+            div_ARCNAME.appendChild(lab_ARCNAME);
+            var reset_ARCNAME = document.createElement('div');
+            reset_ARCNAME.innerHTML = 'clear filter';
+            reset_ARCNAME.className = 'filterlabel';
+            reset_ARCNAME.onclick = function() {
+                var options = document.getElementById("sel_ARCNAME").options;
                 for (var i=0; i < options.length; i++) {
                     options[i].selected = false;
                 }
                 filterFunc();
             };
-            div_ARC.appendChild(reset_ARC);
+            div_ARCNAME.appendChild(reset_ARCNAME);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_ARCCLASS = document.createElement('div');
