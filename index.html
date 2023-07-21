@@ -41,7 +41,7 @@
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
-        <script src="data/ZAMBOANGADELNORTE_SORTED_1.js"></script>
+        <script src="data/ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -95,7 +95,7 @@
         });
         layer_GoogleTerrainHybrid_0;
         map.addLayer(layer_GoogleTerrainHybrid_0);
-        function pop_ZAMBOANGADELNORTE_SORTED_1(feature, layer) {
+        function pop_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -125,10 +125,6 @@
                         <td>' + (feature.properties['ARCC'] !== null ? autolinker.link(feature.properties['ARCC'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">MUN_CITY</th>\
-                        <td>' + (feature.properties['MUN_CITY'] !== null ? autolinker.link(feature.properties['MUN_CITY'].toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
                         <th scope="row">ARC NAME</th>\
                         <td>' + (feature.properties['ARC NAME'] !== null ? autolinker.link(feature.properties['ARC NAME'].toLocaleString()) : '') + '</td>\
                     </tr>\
@@ -137,18 +133,38 @@
                         <td>' + (feature.properties['ARC CLASS'] !== null ? autolinker.link(feature.properties['ARC CLASS'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <th scope="row">MUN_CITY</th>\
+                        <td>' + (feature.properties['MUN_CITY'] !== null ? autolinker.link(feature.properties['MUN_CITY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CD</th>\
+                        <td>' + (feature.properties['CD'] !== null ? autolinker.link(feature.properties['CD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
                         <th scope="row">BARANGAY</th>\
                         <td>' + (feature.properties['BARANGAY'] !== null ? autolinker.link(feature.properties['BARANGAY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">B_PSGC</th>\
+                        <td>' + (feature.properties['B_PSGC'] !== null ? autolinker.link(feature.properties['B_PSGC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GEO_AREA</th>\
+                        <td>' + (feature.properties['GEO_AREA'] !== null ? autolinker.link(feature.properties['GEO_AREA'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">POPULATION</th>\
+                        <td>' + (feature.properties['POPULATION'] !== null ? autolinker.link(feature.properties['POPULATION'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_ZAMBOANGADELNORTE_SORTED_1_0(feature) {
+        function style_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1_0(feature) {
             switch(String(feature.properties['MUN_CITY'])) {
                 case 'Baliguian':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -157,13 +173,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(72,237,157,1.0)',
+                fillColor: 'rgba(160,27,231,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Dapitan City':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -172,13 +188,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(236,239,42,1.0)',
+                fillColor: 'rgba(232,208,111,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Dipolog City':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -187,13 +203,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(181,211,70,1.0)',
+                fillColor: 'rgba(77,42,203,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Godod':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -202,13 +218,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(224,16,71,1.0)',
+                fillColor: 'rgba(135,231,204,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Gutalac':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -217,13 +233,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(135,221,238,1.0)',
+                fillColor: 'rgba(218,86,179,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Jose Dalman':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -232,13 +248,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(43,110,203,1.0)',
+                fillColor: 'rgba(102,102,227,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Kalawit':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -247,13 +263,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(204,100,40,1.0)',
+                fillColor: 'rgba(187,231,43,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Katipunan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -262,13 +278,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(207,172,123,1.0)',
+                fillColor: 'rgba(149,207,119,1.0)',
                 interactive: true,
             }
                     break;
-                case 'La Libertad':
+                case 'La libertad':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -277,13 +293,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(111,200,196,1.0)',
+                fillColor: 'rgba(203,58,97,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Labason':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -292,13 +308,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(144,204,112,1.0)',
+                fillColor: 'rgba(219,161,128,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Leon B. Postigo':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -307,13 +323,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(235,212,122,1.0)',
+                fillColor: 'rgba(228,38,212,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Liloy':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -322,13 +338,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(137,70,218,1.0)',
+                fillColor: 'rgba(238,240,97,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Manukan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -337,13 +353,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(230,89,188,1.0)',
+                fillColor: 'rgba(202,43,120,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Mutia':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -352,13 +368,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(132,228,117,1.0)',
+                fillColor: 'rgba(91,224,70,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Piñan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -367,13 +383,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(112,206,122,1.0)',
+                fillColor: 'rgba(92,205,151,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Polanco':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -382,13 +398,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(101,61,230,1.0)',
+                fillColor: 'rgba(219,32,41,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Pres. Manuel A. Roxas':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -397,13 +413,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(239,80,52,1.0)',
+                fillColor: 'rgba(104,200,217,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Rizal':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -412,13 +428,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(59,94,237,1.0)',
+                fillColor: 'rgba(121,142,227,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Salug':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -427,13 +443,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(110,187,235,1.0)',
+                fillColor: 'rgba(205,34,228,1.0)',
                 interactive: true,
             }
                     break;
-                case 'Sergio Osmeña Sr':
+                case 'Sergio Osmeña Sr.':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -442,13 +458,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(212,25,37,1.0)',
+                fillColor: 'rgba(40,210,54,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Siayan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -457,13 +473,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(202,21,187,1.0)',
+                fillColor: 'rgba(79,133,209,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sibuco':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -472,13 +488,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(177,99,216,1.0)',
+                fillColor: 'rgba(115,178,214,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sibutad':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -487,13 +503,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(89,235,136,1.0)',
+                fillColor: 'rgba(127,62,212,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sindangan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -502,13 +518,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(228,19,120,1.0)',
+                fillColor: 'rgba(236,197,142,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Siocon':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -517,13 +533,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(127,125,235,1.0)',
+                fillColor: 'rgba(234,54,17,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sirawai':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -532,13 +548,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,79,224,1.0)',
+                fillColor: 'rgba(70,225,215,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Tampilisan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -547,13 +563,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(84,201,170,1.0)',
+                fillColor: 'rgba(146,236,29,1.0)',
                 interactive: true,
             }
                     break;
                 default:
                     return {
-                pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -562,26 +578,26 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(136,208,42,1.0)',
+                fillColor: 'rgba(88,235,132,1.0)',
                 interactive: true,
             }
                     break;
             }
         }
-        map.createPane('pane_ZAMBOANGADELNORTE_SORTED_1');
-        map.getPane('pane_ZAMBOANGADELNORTE_SORTED_1').style.zIndex = 401;
-        map.getPane('pane_ZAMBOANGADELNORTE_SORTED_1').style['mix-blend-mode'] = 'normal';
-        var layer_ZAMBOANGADELNORTE_SORTED_1 = new L.geoJson(json_ZAMBOANGADELNORTE_SORTED_1, {
+        map.createPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1');
+        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1').style.zIndex = 401;
+        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1').style['mix-blend-mode'] = 'normal';
+        var layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1 = new L.geoJson(json_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_ZAMBOANGADELNORTE_SORTED_1',
-            layerName: 'layer_ZAMBOANGADELNORTE_SORTED_1',
-            pane: 'pane_ZAMBOANGADELNORTE_SORTED_1',
-            onEachFeature: pop_ZAMBOANGADELNORTE_SORTED_1,
-            style: style_ZAMBOANGADELNORTE_SORTED_1_0,
+            dataVar: 'json_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+            layerName: 'layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+            pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+            onEachFeature: pop_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1,
+            style: style_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1_0,
         });
-        bounds_group.addLayer(layer_ZAMBOANGADELNORTE_SORTED_1);
-        map.addLayer(layer_ZAMBOANGADELNORTE_SORTED_1);
+        bounds_group.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1);
+        map.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1);
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
@@ -594,7 +610,7 @@
         .title += 'Search for a place';
         setBounds();
         map.addControl(new L.Control.Search({
-            layer: layer_ZAMBOANGADELNORTE_SORTED_1,
+            layer: layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1,
             initial: false,
             hideMarkerOnCollapse: true,
             propertyName: 'BARANGAY'}));
@@ -619,7 +635,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"ARCC": "str","MUN_CITY": "str","ARC NAME": "str","ARC CLASS": "str"};
+        var Filters = {"CD": "str","ARCC": "str","MUN_CITY": "str","ARC NAME": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -711,6 +727,38 @@
         }
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
+            var div_CD = document.createElement('div');
+            div_CD.id = "div_CD";
+            div_CD.className= "filterselect";
+            document.getElementById("menu").appendChild(div_CD);
+            sel_CD = document.createElement('select');
+            sel_CD.multiple = true;
+            sel_CD.size = 3;
+            sel_CD.id = "sel_CD";
+            var CD_options_str = "<option value='' unselected></option>";
+            sel_CD.onchange = function(){filterFunc()};
+            CD_options_str  += '<option value="1st">1st</option>';
+            CD_options_str  += '<option value="2nd">2nd</option>';
+            CD_options_str  += '<option value="3rd">3rd</option>';
+            sel_CD.innerHTML = CD_options_str;
+            div_CD.appendChild(sel_CD);
+            var lab_CD = document.createElement('div');
+            lab_CD.innerHTML = 'CD';
+            lab_CD.className = 'filterlabel';
+            div_CD.appendChild(lab_CD);
+            var reset_CD = document.createElement('div');
+            reset_CD.innerHTML = 'clear filter';
+            reset_CD.className = 'filterlabel';
+            reset_CD.onclick = function() {
+                var options = document.getElementById("sel_CD").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_CD.appendChild(reset_CD);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
             var div_ARCC = document.createElement('div');
             div_ARCC.id = "div_ARCC";
             div_ARCC.className= "filterselect";
@@ -765,7 +813,7 @@
             MUN_CITY_options_str  += '<option value="Jose Dalman">Jose Dalman</option>';
             MUN_CITY_options_str  += '<option value="Kalawit">Kalawit</option>';
             MUN_CITY_options_str  += '<option value="Katipunan">Katipunan</option>';
-            MUN_CITY_options_str  += '<option value="La Libertad">La Libertad</option>';
+            MUN_CITY_options_str  += '<option value="La libertad">La libertad</option>';
             MUN_CITY_options_str  += '<option value="Labason">Labason</option>';
             MUN_CITY_options_str  += '<option value="Leon B. Postigo">Leon B. Postigo</option>';
             MUN_CITY_options_str  += '<option value="Liloy">Liloy</option>';
@@ -776,7 +824,7 @@
             MUN_CITY_options_str  += '<option value="Pres. Manuel A. Roxas">Pres. Manuel A. Roxas</option>';
             MUN_CITY_options_str  += '<option value="Rizal">Rizal</option>';
             MUN_CITY_options_str  += '<option value="Salug">Salug</option>';
-            MUN_CITY_options_str  += '<option value="Sergio Osmeña Sr">Sergio Osmeña Sr</option>';
+            MUN_CITY_options_str  += '<option value="Sergio Osmeña Sr.">Sergio Osmeña Sr.</option>';
             MUN_CITY_options_str  += '<option value="Siayan">Siayan</option>';
             MUN_CITY_options_str  += '<option value="Sibuco">Sibuco</option>';
             MUN_CITY_options_str  += '<option value="Sibutad">Sibutad</option>';
@@ -886,43 +934,6 @@
                 filterFunc();
             };
             div_ARCNAME.appendChild(reset_ARCNAME);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_ARCCLASS = document.createElement('div');
-            div_ARCCLASS.id = "div_ARCCLASS";
-            div_ARCCLASS.className= "filterselect";
-            document.getElementById("menu").appendChild(div_ARCCLASS);
-            sel_ARCCLASS = document.createElement('select');
-            sel_ARCCLASS.multiple = true;
-            sel_ARCCLASS.size = 8;
-            sel_ARCCLASS.id = "sel_ARCCLASS";
-            var ARCCLASS_options_str = "<option value='' unselected></option>";
-            sel_ARCCLASS.onchange = function(){filterFunc()};
-            ARCCLASS_options_str  += '<option value="Low Prime">Low Prime</option>';
-            ARCCLASS_options_str  += '<option value="Low Satellite">Low Satellite</option>';
-            ARCCLASS_options_str  += '<option value="Low Semi-Prime">Low Semi-Prime</option>';
-            ARCCLASS_options_str  += '<option value="Medium Prime">Medium Prime</option>';
-            ARCCLASS_options_str  += '<option value="Medium Satellite">Medium Satellite</option>';
-            ARCCLASS_options_str  += '<option value="Medium Semi-Prime">Medium Semi-Prime</option>';
-            ARCCLASS_options_str  += '<option value="UNCLASSIFIED">UNCLASSIFIED</option>';
-            ARCCLASS_options_str  += '<option value="UNCLASSIFIEDUNCLASSIFIED">UNCLASSIFIEDUNCLASSIFIED</option>';
-            sel_ARCCLASS.innerHTML = ARCCLASS_options_str;
-            div_ARCCLASS.appendChild(sel_ARCCLASS);
-            var lab_ARCCLASS = document.createElement('div');
-            lab_ARCCLASS.innerHTML = 'ARC CLASS';
-            lab_ARCCLASS.className = 'filterlabel';
-            div_ARCCLASS.appendChild(lab_ARCCLASS);
-            var reset_ARCCLASS = document.createElement('div');
-            reset_ARCCLASS.innerHTML = 'clear filter';
-            reset_ARCCLASS.className = 'filterlabel';
-            reset_ARCCLASS.onclick = function() {
-                var options = document.getElementById("sel_ARCCLASS").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_ARCCLASS.appendChild(reset_ARCCLASS);
         </script>
     </body>
 </html>
