@@ -8,7 +8,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
-        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/MarkerCluster.css">
+        <link rel="stylesheet" href="css/MarkerCluster.Default.css">
         <link rel="stylesheet" href="css/filter.css">
 <link rel="stylesheet" href="css/nouislider.min.css">
         <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
@@ -28,6 +29,7 @@
         </div>
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/multi-style-layer.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -37,11 +39,13 @@
         <script src="js/labels.js"></script>
         <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
-        <script src="js/leaflet-search.js"></script>
+        <script src="js/leaflet.markercluster.js"></script>
         <script src="js/tailDT.js"></script>
 <script src="js/nouislider.min.js"></script>
 <script src="js/wNumb.js"></script>
-        <script src="data/ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1.js"></script>
+        <script src="data/ZAMBOANGADELNORTEBRGYSHPMAP_2.js"></script>
+        <script src="data/ARBO2023_nbc03_3.js"></script>
+        <script src="data/DARInfraProject_4.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -57,7 +61,6 @@
                 fillOpacity: 1
               });
             }
-            highlightLayer.openPopup();
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
@@ -84,41 +87,54 @@
                 map.fitBounds(bounds_group.getBounds());
             }
         }
-        map.createPane('pane_GoogleTerrainHybrid_0');
-        map.getPane('pane_GoogleTerrainHybrid_0').style.zIndex = 400;
-        var layer_GoogleTerrainHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
-            pane: 'pane_GoogleTerrainHybrid_0',
+        map.createPane('pane_GoogleHybrid_0');
+        map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
+        var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleHybrid_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_GoogleHybrid_0;
+        map.addLayer(layer_GoogleHybrid_0);
+        map.createPane('pane_GoogleMaps_1');
+        map.getPane('pane_GoogleMaps_1').style.zIndex = 401;
+        var layer_GoogleMaps_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleMaps_1',
             opacity: 1.0,
             attribution: '',
             minZoom: 1,
             maxZoom: 28,
         });
-        layer_GoogleTerrainHybrid_0;
-        map.addLayer(layer_GoogleTerrainHybrid_0);
-        function pop_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1(feature, layer) {
+        layer_GoogleMaps_1;
+        map.addLayer(layer_GoogleMaps_1);
+        function pop_ZAMBOANGADELNORTEBRGYSHPMAP_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
                         e.target._eventParents[i].resetStyle(e.target);
-                    }
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
                     }
                 },
                 mouseover: highlightFeature,
             });
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">REGION</th>\
-                        <td>' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <th scope="row">PROVINCE</th>\
-                        <td>' + (feature.properties['PROVINCE'] !== null ? autolinker.link(feature.properties['PROVINCE'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2">' + (feature.properties['REGION'] !== null ? autolinker.link(feature.properties['REGION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PROVINCE'] !== null ? autolinker.link(feature.properties['PROVINCE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MUN_CITY__'] !== null ? autolinker.link(feature.properties['MUN_CITY__'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['BARANGAY__'] !== null ? autolinker.link(feature.properties['BARANGAY__'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">ARCC</th>\
@@ -137,6 +153,12 @@
                         <td>' + (feature.properties['MUN_CITY'] !== null ? autolinker.link(feature.properties['MUN_CITY'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <td colspan="2">' + (feature.properties['M_PSGC'] !== null ? autolinker.link(feature.properties['M_PSGC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MC_CODE'] !== null ? autolinker.link(feature.properties['MC_CODE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
                         <th scope="row">CD</th>\
                         <td>' + (feature.properties['CD'] !== null ? autolinker.link(feature.properties['CD'].toLocaleString()) : '') + '</td>\
                     </tr>\
@@ -149,6 +171,9 @@
                         <td>' + (feature.properties['B_PSGC'] !== null ? autolinker.link(feature.properties['B_PSGC'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
+                        <td colspan="2">' + (feature.properties['BC_CODE'] !== null ? autolinker.link(feature.properties['BC_CODE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
                         <th scope="row">GEO_AREA</th>\
                         <td>' + (feature.properties['GEO_AREA'] !== null ? autolinker.link(feature.properties['GEO_AREA'].toLocaleString()) : '') + '</td>\
                     </tr>\
@@ -156,15 +181,18 @@
                         <th scope="row">POPULATION</th>\
                         <td>' + (feature.properties['POPULATION'] !== null ? autolinker.link(feature.properties['POPULATION'].toLocaleString()) : '') + '</td>\
                     </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEODATA_ID'] !== null ? autolinker.link(feature.properties['GEODATA_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1_0(feature) {
+        function style_ZAMBOANGADELNORTEBRGYSHPMAP_2_0(feature) {
             switch(String(feature.properties['MUN_CITY'])) {
                 case 'Baliguian':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -173,13 +201,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(160,27,231,1.0)',
+                fillColor: 'rgba(225,85,171,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Dapitan City':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -188,13 +216,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(232,208,111,1.0)',
+                fillColor: 'rgba(215,123,93,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Dipolog City':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -203,13 +231,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(77,42,203,1.0)',
+                fillColor: 'rgba(80,209,159,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Godod':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -218,13 +246,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(135,231,204,1.0)',
+                fillColor: 'rgba(231,100,236,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Gutalac':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -233,13 +261,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(218,86,179,1.0)',
+                fillColor: 'rgba(49,170,211,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Jose Dalman':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -248,13 +276,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(102,102,227,1.0)',
+                fillColor: 'rgba(237,221,101,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Kalawit':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -263,13 +291,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(187,231,43,1.0)',
+                fillColor: 'rgba(46,212,184,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Katipunan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -278,13 +306,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(149,207,119,1.0)',
+                fillColor: 'rgba(213,225,104,1.0)',
                 interactive: true,
             }
                     break;
                 case 'La libertad':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -293,13 +321,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(203,58,97,1.0)',
+                fillColor: 'rgba(93,43,200,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Labason':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -308,13 +336,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(219,161,128,1.0)',
+                fillColor: 'rgba(200,165,96,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Leon B. Postigo':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -323,13 +351,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(228,38,212,1.0)',
+                fillColor: 'rgba(57,138,208,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Liloy':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -338,13 +366,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(238,240,97,1.0)',
+                fillColor: 'rgba(119,232,116,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Manukan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -353,13 +381,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(202,43,120,1.0)',
+                fillColor: 'rgba(135,167,237,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Mutia':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -368,13 +396,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(91,224,70,1.0)',
+                fillColor: 'rgba(112,213,152,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Piñan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -383,13 +411,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(92,205,151,1.0)',
+                fillColor: 'rgba(237,143,181,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Polanco':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -398,13 +426,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(219,32,41,1.0)',
+                fillColor: 'rgba(59,240,92,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Pres. Manuel A. Roxas':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -413,13 +441,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(104,200,217,1.0)',
+                fillColor: 'rgba(94,215,51,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Rizal':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -428,13 +456,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(121,142,227,1.0)',
+                fillColor: 'rgba(163,230,20,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Salug':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -443,13 +471,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,34,228,1.0)',
+                fillColor: 'rgba(179,69,216,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sergio Osmeña Sr.':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -458,13 +486,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(40,210,54,1.0)',
+                fillColor: 'rgba(79,65,207,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Siayan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -473,13 +501,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(79,133,209,1.0)',
+                fillColor: 'rgba(149,216,90,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sibuco':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -488,13 +516,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(115,178,214,1.0)',
+                fillColor: 'rgba(48,206,211,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sibutad':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -503,13 +531,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(127,62,212,1.0)',
+                fillColor: 'rgba(209,117,114,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sindangan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -518,13 +546,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(236,197,142,1.0)',
+                fillColor: 'rgba(240,46,204,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Siocon':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -533,13 +561,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(234,54,17,1.0)',
+                fillColor: 'rgba(139,36,229,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Sirawai':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -548,13 +576,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(70,225,215,1.0)',
+                fillColor: 'rgba(221,141,71,1.0)',
                 interactive: true,
             }
                     break;
                 case 'Tampilisan':
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -563,13 +591,13 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(146,236,29,1.0)',
+                fillColor: 'rgba(33,50,209,1.0)',
                 interactive: true,
             }
                     break;
                 default:
                     return {
-                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
+                pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
@@ -578,26 +606,655 @@
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(88,235,132,1.0)',
+                fillColor: 'rgba(215,47,78,1.0)',
                 interactive: true,
             }
                     break;
             }
         }
-        map.createPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1');
-        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1').style.zIndex = 401;
-        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1').style['mix-blend-mode'] = 'normal';
-        var layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1 = new L.geoJson(json_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1, {
+        map.createPane('pane_ZAMBOANGADELNORTEBRGYSHPMAP_2');
+        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAP_2').style.zIndex = 402;
+        map.getPane('pane_ZAMBOANGADELNORTEBRGYSHPMAP_2').style['mix-blend-mode'] = 'normal';
+        var layer_ZAMBOANGADELNORTEBRGYSHPMAP_2 = new L.geoJson(json_ZAMBOANGADELNORTEBRGYSHPMAP_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
-            layerName: 'layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
-            pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1',
-            onEachFeature: pop_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1,
-            style: style_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1_0,
+            dataVar: 'json_ZAMBOANGADELNORTEBRGYSHPMAP_2',
+            layerName: 'layer_ZAMBOANGADELNORTEBRGYSHPMAP_2',
+            pane: 'pane_ZAMBOANGADELNORTEBRGYSHPMAP_2',
+            onEachFeature: pop_ZAMBOANGADELNORTEBRGYSHPMAP_2,
+            style: style_ZAMBOANGADELNORTEBRGYSHPMAP_2_0,
         });
-        bounds_group.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1);
-        map.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1);
+        bounds_group.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAP_2);
+        map.addLayer(layer_ZAMBOANGADELNORTEBRGYSHPMAP_2);
+        function pop_ARBO2023_nbc03_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ARBO</th>\
+                        <td>' + (feature.properties['ARBO'] !== null ? autolinker.link(feature.properties['ARBO'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ORG_ID</th>\
+                        <td>' + (feature.properties['ORG_ID'] !== null ? autolinker.link(feature.properties['ORG_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['B_ID'] !== null ? autolinker.link(feature.properties['B_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LAT</th>\
+                        <td>' + (feature.properties['LAT'] !== null ? autolinker.link(feature.properties['LAT'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LONG</th>\
+                        <td>' + (feature.properties['LONG'] !== null ? autolinker.link(feature.properties['LONG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row"> ORG_TYPE</th>\
+                        <td>' + (feature.properties[' ORG_TYPE'] !== null ? autolinker.link(feature.properties[' ORG_TYPE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YEAR_ORG</th>\
+                        <td>' + (feature.properties['YEAR_ORG'] !== null ? autolinker.link(feature.properties['YEAR_ORG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">REG_AGENCY</th>\
+                        <td>' + (feature.properties['REG_AGENCY'] !== null ? autolinker.link(feature.properties['REG_AGENCY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">YEAR_REG</th>\
+                        <td>' + (feature.properties['YEAR_REG'] !== null ? autolinker.link(feature.properties['YEAR_REG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ARBO2023_nbc03_3_0(feature) {
+            switch(String(feature.properties[' ORG_TYPE'])) {
+                case 'COOPERATIVE':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,85,120,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'FARMERS\' ASSOCIATION / FARMERS\' ORGANIZATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,212,43,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'IRRIGATORS ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(176,26,235,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WATER USERS ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(38,223,168,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WOMEN\'S ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,177,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 4.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,134,200,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        function style_ARBO2023_nbc03_3_1(feature) {
+            switch(String(feature.properties[' ORG_TYPE'])) {
+                case 'COOPERATIVE':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(207,85,120,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'FARMERS\' ASSOCIATION / FARMERS\' ORGANIZATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,212,43,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'IRRIGATORS ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(176,26,235,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WATER USERS ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(38,223,168,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'WOMEN\'S ASSOCIATION':
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,177,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_ARBO2023_nbc03_3',
+                radius: 0.65,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 4.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(106,134,200,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_ARBO2023_nbc03_3');
+        map.getPane('pane_ARBO2023_nbc03_3').style.zIndex = 403;
+        map.getPane('pane_ARBO2023_nbc03_3').style['mix-blend-mode'] = 'normal';
+        var layer_ARBO2023_nbc03_3 = new L.geoJson.multiStyle(json_ARBO2023_nbc03_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ARBO2023_nbc03_3',
+            layerName: 'layer_ARBO2023_nbc03_3',
+            pane: 'pane_ARBO2023_nbc03_3',
+            onEachFeature: pop_ARBO2023_nbc03_3,
+            pointToLayers: [function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ARBO2023_nbc03_3_0(feature));
+            },function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ARBO2023_nbc03_3_1(feature));
+            },
+        ]});
+        bounds_group.addLayer(layer_ARBO2023_nbc03_3);
+        map.addLayer(layer_ARBO2023_nbc03_3);
+        function pop_DARInfraProject_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Region'] !== null ? autolinker.link(feature.properties['Region'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Province'] !== null ? autolinker.link(feature.properties['Province'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CD</th>\
+                        <td>' + (feature.properties['CD'] !== null ? autolinker.link(feature.properties['CD'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Congressma'] !== null ? autolinker.link(feature.properties['Congressma'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Municipali</th>\
+                        <td>' + (feature.properties['Municipali'] !== null ? autolinker.link(feature.properties['Municipali'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ARC Name'] !== null ? autolinker.link(feature.properties['ARC Name'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SP Title</th>\
+                        <td>' + (feature.properties['SP Title'] !== null ? autolinker.link(feature.properties['SP Title'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SP Type</th>\
+                        <td>' + (feature.properties['SP Type'] !== null ? autolinker.link(feature.properties['SP Type'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Unit</th>\
+                        <td>' + (feature.properties['Unit'] !== null ? autolinker.link(feature.properties['Unit'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FAPs</th>\
+                        <td>' + (feature.properties['FAPs'] !== null ? autolinker.link(feature.properties['FAPs'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Status</th>\
+                        <td>' + (feature.properties['Status'] !== null ? autolinker.link(feature.properties['Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Start Date</th>\
+                        <td>' + (feature.properties['Start Date'] !== null ? autolinker.link(feature.properties['Start Date'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Actual End</th>\
+                        <td>' + (feature.properties['Actual End'] !== null ? autolinker.link(feature.properties['Actual End'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Year</th>\
+                        <td>' + (feature.properties['Year'] !== null ? autolinker.link(feature.properties['Year'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TurnOver</th>\
+                        <td>' + (feature.properties['TurnOver'] !== null ? autolinker.link(feature.properties['TurnOver'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">JobsGen</th>\
+                        <td>' + (feature.properties['JobsGen'] !== null ? autolinker.link(feature.properties['JobsGen'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name of AR'] !== null ? autolinker.link(feature.properties['Name of AR'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IAgency'] !== null ? autolinker.link(feature.properties['IAgency'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['MOI'] !== null ? autolinker.link(feature.properties['MOI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Remarks'] !== null ? autolinker.link(feature.properties['Remarks'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Batch'] !== null ? autolinker.link(feature.properties['Batch'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RPM'] !== null ? autolinker.link(feature.properties['RPM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['mun_psgc'] !== null ? autolinker.link(feature.properties['mun_psgc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">lat</th>\
+                        <td>' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">long</th>\
+                        <td>' + (feature.properties['long'] !== null ? autolinker.link(feature.properties['long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">lat-long</th>\
+                        <td>' + (feature.properties['lat-long'] !== null ? autolinker.link(feature.properties['lat-long'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">scale</th>\
+                        <td>' + (feature.properties['scale'] !== null ? autolinker.link(feature.properties['scale'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Cost</th>\
+                        <td>' + (feature.properties['Cost'] !== null ? autolinker.link(feature.properties['Cost'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">LP</th>\
+                        <td>' + (feature.properties['LP'] !== null ? autolinker.link(feature.properties['LP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">GOP</th>\
+                        <td>' + (feature.properties['GOP'] !== null ? autolinker.link(feature.properties['GOP'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Equity</th>\
+                        <td>' + (feature.properties['Equity'] !== null ? autolinker.link(feature.properties['Equity'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Accomp'] !== null ? autolinker.link(feature.properties['Accomp'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ARB</th>\
+                        <td>' + (feature.properties['ARB'] !== null ? autolinker.link(feature.properties['ARB'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_DARInfraProject_4_0(feature) {
+            switch(String(feature.properties['SP Type'])) {
+                case 'BRIDGE':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(228,57,137,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'FARM-TO-MARKET ROAD':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(111,161,214,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'HEALTH CENTER':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,208,48,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'IRRIGATION':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(119,115,236,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MARKET/PROCESSING CENTER':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,190,142,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'MULTI-PURPOSE BUILDING/CENTER':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(221,110,106,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'POST HARVEST FACILITY':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(88,235,238,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'POTABLE WATER SUPPLY':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(25,225,28,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SANITATION SYSTEM':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,12,203,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SCHOOL BUILDING':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,200,27,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'SOLAR POWER TECHNOLOGY':
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,49,196,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_DARInfraProject_4',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(114,210,164,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_DARInfraProject_4');
+        map.getPane('pane_DARInfraProject_4').style.zIndex = 404;
+        map.getPane('pane_DARInfraProject_4').style['mix-blend-mode'] = 'normal';
+        var layer_DARInfraProject_4 = new L.geoJson(json_DARInfraProject_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_DARInfraProject_4',
+            layerName: 'layer_DARInfraProject_4',
+            pane: 'pane_DARInfraProject_4',
+            onEachFeature: pop_DARInfraProject_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_DARInfraProject_4_0(feature));
+            },
+        });
+        var cluster_DARInfraProject_4 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2});
+        cluster_DARInfraProject_4.addLayer(layer_DARInfraProject_4);
+
+        bounds_group.addLayer(layer_DARInfraProject_4);
+        cluster_DARInfraProject_4.addTo(map);
         var osmGeocoder = new L.Control.Geocoder({
             collapsed: true,
             position: 'topleft',
@@ -608,14 +1265,9 @@
         .className += ' fa fa-search';
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'DAR Infra Project<br /><table><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_BRIDGE0.png" /></td><td>BRIDGE</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_FARMTOMARKETROAD1.png" /></td><td>FARM-TO-MARKET ROAD</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_HEALTHCENTER2.png" /></td><td>HEALTH CENTER</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_IRRIGATION3.png" /></td><td>IRRIGATION</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_MARKETPROCESSINGCENTER4.png" /></td><td>MARKET/PROCESSING CENTER</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_MULTIPURPOSEBUILDINGCENTER5.png" /></td><td>MULTI-PURPOSE BUILDING/CENTER</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_POSTHARVESTFACILITY6.png" /></td><td>POST HARVEST FACILITY</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_POTABLEWATERSUPPLY7.png" /></td><td>POTABLE WATER SUPPLY</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_SANITATIONSYSTEM8.png" /></td><td>SANITATION SYSTEM</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_SCHOOLBUILDING9.png" /></td><td>SCHOOL BUILDING</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_SOLARPOWERTECHNOLOGY10.png" /></td><td>SOLAR POWER TECHNOLOGY</td></tr><tr><td style="text-align: center;"><img src="legend/DARInfraProject_4_11.png" /></td><td></td></tr></table>': cluster_DARInfraProject_4,'ARBO2023_nbc03<br /><table><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_COOPERATIVE0.png" /></td><td>COOPERATIVE</td></tr><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_FARMERSASSOCIATIONFARMERSORGANIZATION1.png" /></td><td>FARMERS\' ASSOCIATION / FARMERS\' ORGANIZATION</td></tr><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_IRRIGATORSASSOCIATION2.png" /></td><td>IRRIGATORS ASSOCIATION</td></tr><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_WATERUSERSASSOCIATION3.png" /></td><td>WATER USERS ASSOCIATION</td></tr><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_WOMENSASSOCIATION4.png" /></td><td>WOMEN\'S ASSOCIATION</td></tr><tr><td style="text-align: center;"><img src="legend/ARBO2023_nbc03_3_5.png" /></td><td></td></tr></table>': layer_ARBO2023_nbc03_3,'ZAMBOANGA DEL NORTE BRGY SHP MAP<br /><table><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Baliguian0.png" /></td><td>Baliguian</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_DapitanCity1.png" /></td><td>Dapitan City</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_DipologCity2.png" /></td><td>Dipolog City</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Godod3.png" /></td><td>Godod</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Gutalac4.png" /></td><td>Gutalac</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_JoseDalman5.png" /></td><td>Jose Dalman</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Kalawit6.png" /></td><td>Kalawit</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Katipunan7.png" /></td><td>Katipunan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Lalibertad8.png" /></td><td>La libertad</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Labason9.png" /></td><td>Labason</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_LeonBPostigo10.png" /></td><td>Leon B. Postigo</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Liloy11.png" /></td><td>Liloy</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Manukan12.png" /></td><td>Manukan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Mutia13.png" /></td><td>Mutia</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Piñan14.png" /></td><td>Piñan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Polanco15.png" /></td><td>Polanco</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_PresManuelARoxas16.png" /></td><td>Pres. Manuel A. Roxas</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Rizal17.png" /></td><td>Rizal</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Salug18.png" /></td><td>Salug</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_SergioOsmeñaSr19.png" /></td><td>Sergio Osmeña Sr.</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Siayan20.png" /></td><td>Siayan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Sibuco21.png" /></td><td>Sibuco</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Sibutad22.png" /></td><td>Sibutad</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Sindangan23.png" /></td><td>Sindangan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Siocon24.png" /></td><td>Siocon</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Sirawai25.png" /></td><td>Sirawai</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_Tampilisan26.png" /></td><td>Tampilisan</td></tr><tr><td style="text-align: center;"><img src="legend/ZAMBOANGADELNORTEBRGYSHPMAP_2_27.png" /></td><td></td></tr></table>': layer_ZAMBOANGADELNORTEBRGYSHPMAP_2,"Google Maps": layer_GoogleMaps_1,"Google Hybrid": layer_GoogleHybrid_0,}).addTo(map);
         setBounds();
-        map.addControl(new L.Control.Search({
-            layer: layer_ZAMBOANGADELNORTEBRGYSHPMAPJOIN_1,
-            initial: false,
-            hideMarkerOnCollapse: true,
-            propertyName: 'BARANGAY'}));
-        document.getElementsByClassName('search-button')[0].className +=
-         ' fa fa-binoculars';
         var mapDiv = document.getElementById('map');
         var row = document.createElement('div');
         row.className="row";
@@ -635,7 +1287,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"CD": "str","ARCC": "str","MUN_CITY": "str","ARC NAME": "str"};
+        var Filters = {"CD": "str","MUN_CITY": "str","ARCC": "str","ARC NAME": "str","ARBO": "str","SP Title": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -759,42 +1411,6 @@
             div_CD.appendChild(reset_CD);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_ARCC = document.createElement('div');
-            div_ARCC.id = "div_ARCC";
-            div_ARCC.className= "filterselect";
-            document.getElementById("menu").appendChild(div_ARCC);
-            sel_ARCC = document.createElement('select');
-            sel_ARCC.multiple = true;
-            sel_ARCC.size = 7;
-            sel_ARCC.id = "sel_ARCC";
-            var ARCC_options_str = "<option value='' unselected></option>";
-            sel_ARCC.onchange = function(){filterFunc()};
-            ARCC_options_str  += '<option value="CONVERGENCE">CONVERGENCE</option>';
-            ARCC_options_str  += '<option value="DALARS">DALARS</option>';
-            ARCC_options_str  += '<option value="KALIGULAB">KALIGULAB</option>';
-            ARCC_options_str  += '<option value="NON-ARCC">NON-ARCC</option>';
-            ARCC_options_str  += '<option value="ZN CLUSTER 1">ZN CLUSTER 1</option>';
-            ARCC_options_str  += '<option value="ZN GATEWAY CORRIDOR">ZN GATEWAY CORRIDOR</option>';
-            ARCC_options_str  += '<option value="ZN RESETTLEMENT">ZN RESETTLEMENT</option>';
-            sel_ARCC.innerHTML = ARCC_options_str;
-            div_ARCC.appendChild(sel_ARCC);
-            var lab_ARCC = document.createElement('div');
-            lab_ARCC.innerHTML = 'ARCC';
-            lab_ARCC.className = 'filterlabel';
-            div_ARCC.appendChild(lab_ARCC);
-            var reset_ARCC = document.createElement('div');
-            reset_ARCC.innerHTML = 'clear filter';
-            reset_ARCC.className = 'filterlabel';
-            reset_ARCC.onclick = function() {
-                var options = document.getElementById("sel_ARCC").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_ARCC.appendChild(reset_ARCC);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
             var div_MUN_CITY = document.createElement('div');
             div_MUN_CITY.id = "div_MUN_CITY";
             div_MUN_CITY.className= "filterselect";
@@ -849,6 +1465,42 @@
                 filterFunc();
             };
             div_MUN_CITY.appendChild(reset_MUN_CITY);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ARCC = document.createElement('div');
+            div_ARCC.id = "div_ARCC";
+            div_ARCC.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARCC);
+            sel_ARCC = document.createElement('select');
+            sel_ARCC.multiple = true;
+            sel_ARCC.size = 7;
+            sel_ARCC.id = "sel_ARCC";
+            var ARCC_options_str = "<option value='' unselected></option>";
+            sel_ARCC.onchange = function(){filterFunc()};
+            ARCC_options_str  += '<option value="CONVERGENCE">CONVERGENCE</option>';
+            ARCC_options_str  += '<option value="DALARS">DALARS</option>';
+            ARCC_options_str  += '<option value="KALIGULAB">KALIGULAB</option>';
+            ARCC_options_str  += '<option value="NON-ARCC">NON-ARCC</option>';
+            ARCC_options_str  += '<option value="ZN CLUSTER 1">ZN CLUSTER 1</option>';
+            ARCC_options_str  += '<option value="ZN GATEWAY CORRIDOR">ZN GATEWAY CORRIDOR</option>';
+            ARCC_options_str  += '<option value="ZN RESETTLEMENT">ZN RESETTLEMENT</option>';
+            sel_ARCC.innerHTML = ARCC_options_str;
+            div_ARCC.appendChild(sel_ARCC);
+            var lab_ARCC = document.createElement('div');
+            lab_ARCC.innerHTML = 'ARCC';
+            lab_ARCC.className = 'filterlabel';
+            div_ARCC.appendChild(lab_ARCC);
+            var reset_ARCC = document.createElement('div');
+            reset_ARCC.innerHTML = 'clear filter';
+            reset_ARCC.className = 'filterlabel';
+            reset_ARCC.onclick = function() {
+                var options = document.getElementById("sel_ARCC").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ARCC.appendChild(reset_ARCC);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_ARCNAME = document.createElement('div');
@@ -934,6 +1586,550 @@
                 filterFunc();
             };
             div_ARCNAME.appendChild(reset_ARCNAME);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ARBO = document.createElement('div');
+            div_ARBO.id = "div_ARBO";
+            div_ARBO.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ARBO);
+            sel_ARBO = document.createElement('select');
+            sel_ARBO.multiple = true;
+            sel_ARBO.size = 10;
+            sel_ARBO.id = "sel_ARBO";
+            var ARBO_options_str = "<option value='' unselected></option>";
+            sel_ARBO.onchange = function(){filterFunc()};
+            ARBO_options_str  += '<option value="A.L. MICUBO AGRARIAN REFORM BENEFICIARIES ASSOCIATION (ALMARBAS)">A.L. MICUBO AGRARIAN REFORM BENEFICIARIES ASSOCIATION (ALMARBAS)</option>';
+            ARBO_options_str  += '<option value="AGRARIAN REFORM BENEFECIARIES OF MARCELO COOPERATIVE">AGRARIAN REFORM BENEFECIARIES OF MARCELO COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="ALVENDA AGRARIAN REFORM BENEFICIARIES ASSOCIATION">ALVENDA AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="ALVISIJE IRRIGATORS ASSOCIATION, INC.">ALVISIJE IRRIGATORS ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="BACUNGAN MANGO GROWERS MULTI-PURPOSE COOPERATIVE (BMGMPC)">BACUNGAN MANGO GROWERS MULTI-PURPOSE COOPERATIVE (BMGMPC)</option>';
+            ARBO_options_str  += '<option value="BALIANGAN FARMERS ASSOCIATION">BALIANGAN FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="BALUNO AGRARIAN REFORM BENEFICIARIES AND FARMERS ASSOCIATION">BALUNO AGRARIAN REFORM BENEFICIARIES AND FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="BANGANON AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">BANGANON AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="BANIGAN-PATAWAG SMALL WATER IRRIGATION SYSTEM ASSOCIATION">BANIGAN-PATAWAG SMALL WATER IRRIGATION SYSTEM ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="BARCELONA PRIMARY MULTI-PURPOSE AGRICULTURAL COOPERATIVE (BPMAC)">BARCELONA PRIMARY MULTI-PURPOSE AGRICULTURAL COOPERATIVE (BPMAC)</option>';
+            ARBO_options_str  += '<option value="BARILI FARMER&apos;S ASSOCIATION">BARILI FARMER&apos;S ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="BETHLEHEM AGRARIAN REFORM BENEFICIARIES ASSOCIATION (BARBA)">BETHLEHEM AGRARIAN REFORM BENEFICIARIES ASSOCIATION (BARBA)</option>';
+            ARBO_options_str  += '<option value="BINONI AGRARIAN REFORM BENEFICIARIES ASSOCIATION (BIARBA)">BINONI AGRARIAN REFORM BENEFICIARIES ASSOCIATION (BIARBA)</option>';
+            ARBO_options_str  += '<option value="BOGATONG AGRARIAN REFORM BENEFICIARIES ASSOCIATION">BOGATONG AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="BRGY. BUENAVISTA, GUTALAC, FARMER&apos;S ASSOCIATION INC.">BRGY. BUENAVISTA, GUTALAC, FARMER&apos;S ASSOCIATION INC.</option>';
+            ARBO_options_str  += '<option value="BUENASUERTE AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COPERATIVE">BUENASUERTE AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COPERATIVE</option>';
+            ARBO_options_str  += '<option value="BUNAWAN AGRARIAN REFORM FARMERS BENEFICIARIES ASSOCIATION">BUNAWAN AGRARIAN REFORM FARMERS BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="CABONG TAMPILISAN MULTI-PURPOSE COOPERATIVE">CABONG TAMPILISAN MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="CALILIC MULTI-PURPOSE COOPERATIVE">CALILIC MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="CAMUL AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">CAMUL AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="CANUTO ENERIO AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">CANUTO ENERIO AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="CHRISTIAN MUSLIM AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">CHRISTIAN MUSLIM AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="CLARC 1 SEASIDE WOMENS ASSOCIATION">CLARC 1 SEASIDE WOMENS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="D&apos;VILLAGE ARC MULTI-PURPOSE COOPERATIVE">D&apos;VILLAGE ARC MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="D. RECONALLA NEW LITUBAN MAKIAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (DLIMARBAS)">D. RECONALLA NEW LITUBAN MAKIAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (DLIMARBAS)</option>';
+            ARBO_options_str  += '<option value="DABIAK AGRARIAN REFORM BENEFICIARIES/FARMERS ASSOCIATION">DABIAK AGRARIAN REFORM BENEFICIARIES/FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="DAMPALAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION">DAMPALAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="DANSALAN MAKUGIHON IRRIGATORS ASSOCIATION, INC.">DANSALAN MAKUGIHON IRRIGATORS ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="DANSULLAN FARMERS MULTI-PURPOSE COOPERATIVE">DANSULLAN FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="DENOYAN FARMERS MULTIPURPOSE COOPERATIVE">DENOYAN FARMERS MULTIPURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="DEPANI, AGUIRRE, GUPOT, LINAY, LINGATONGAN, SALOYONG AGRARIAN REFORM COOPERATIVE">DEPANI, AGUIRRE, GUPOT, LINAY, LINGATONGAN, SALOYONG AGRARIAN REFORM COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="DICOYONG ARBS & FARMERS ASSOCIATION">DICOYONG ARBS & FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="DINASAN FARMERS AGRARIAN REFORM BENEFICIARIES COOPERATIVE">DINASAN FARMERS AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="DINUAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE (DARBECO)">DINUAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE (DARBECO)</option>';
+            ARBO_options_str  += '<option value="DIPOLOG VEGETABLE GROWERS ASSOCIATION">DIPOLOG VEGETABLE GROWERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="DIPOLOG-POLANCO IRRIGATORS&apos; ASSOCIATION, INC.">DIPOLOG-POLANCO IRRIGATORS&apos; ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="DIWAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (DARBA)">DIWAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (DARBA)</option>';
+            ARBO_options_str  += '<option value="DO�A CECILIA ARBS & FARMERS ASSOCIATION">DO�A CECILIA ARBS & FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="DPIA MARKETING COOPERATIVE">DPIA MARKETING COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="EAST POBLACION AGRARIAN REFORM BENEFICIARIES, FARMERS & FISHERFOLKS ASSOCIATION">EAST POBLACION AGRARIAN REFORM BENEFICIARIES, FARMERS & FISHERFOLKS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="EL PARAISO ARB & FARMERS ASSOCIATION">EL PARAISO ARB & FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="EL PARAISO MULTI-PURPOSE COOPERATIVE">EL PARAISO MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="FARMINGTON CARP FARMER BENEFICIARIES ASSOCIATION INC.">FARMINGTON CARP FARMER BENEFICIARIES ASSOCIATION INC.</option>';
+            ARBO_options_str  += '<option value="GABU-BALAS-LAWIGAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE">GABU-BALAS-LAWIGAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="GODOD FARMERS MULTI-PURPOSE COOPERATIVE">GODOD FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="GOIN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">GOIN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="GUINLES FARMERS MULTI- PURPOSE COOPERATIVE">GUINLES FARMERS MULTI- PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="GUISALI IRRIGATOR&apos;S ASSOCIATION, INC.">GUISALI IRRIGATOR&apos;S ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="GUNYAN FARMER&apos;S MULTI-PURPOSE COOPERATIVE">GUNYAN FARMER&apos;S MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="IMELDA AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE (IMARBEMCO)">IMELDA AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE (IMARBEMCO)</option>';
+            ARBO_options_str  += '<option value="JATIAN AGRARIAN REFORM BENEFICIARIES FARMERS ASSOCIATION">JATIAN AGRARIAN REFORM BENEFICIARIES FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="JOAQUIN MACIAS AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">JOAQUIN MACIAS AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="JOLIPAMAN IA">JOLIPAMAN IA</option>';
+            ARBO_options_str  += '<option value="KABUHAYAN FARMERS ASSOCIATION">KABUHAYAN FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="KALAWIT MUSLIM-CHRISTIAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (KAMCARBA)">KALAWIT MUSLIM-CHRISTIAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION (KAMCARBA)</option>';
+            ARBO_options_str  += '<option value="KAUSWAGAN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">KAUSWAGAN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LA ESPERANZA NANGKAAN, DAMASING, SAN ROQUE AGRARIAN REFORM BENEFICIARIES COOPERATIVE (LANNDSARBECO)">LA ESPERANZA NANGKAAN, DAMASING, SAN ROQUE AGRARIAN REFORM BENEFICIARIES COOPERATIVE (LANNDSARBECO)</option>';
+            ARBO_options_str  += '<option value="LA LIBERTAD AGRARIAN REFORM BENEFICIARIES COOPERATIVE">LA LIBERTAD AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LABAKID AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">LABAKID AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LABRADOR AGRARIAN REFORM BENEFICIARIES COOPERATIVE">LABRADOR AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LAGAG AGRARIAN REFORM BENEFICIARIES COOPERATIVE (LARBECO)">LAGAG AGRARIAN REFORM BENEFICIARIES COOPERATIVE (LARBECO)</option>';
+            ARBO_options_str  += '<option value="LANGATIAN CARP BENEFICIARIES AGRARIAN REFORM COOPERATIVE">LANGATIAN CARP BENEFICIARIES AGRARIAN REFORM COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LINTANGAN ARB FARMERS ASSOCIATION">LINTANGAN ARB FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="LIWANAG ASSOCIATION">LIWANAG ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="LOMOGOM IRRIGATORS&apos; ASSOCIATION, INC.">LOMOGOM IRRIGATORS&apos; ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="LOWER GUMAY AGRARIAN REFORM BENEFICIARIES COOPERATIVE">LOWER GUMAY AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="LOWER LUX ARB & FARMERS ASSOCIATION">LOWER LUX ARB & FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="LUX MULTI-PURPOSE COOPERATIVE">LUX MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="MALAYAL ARB FARMERS ASSOCIATION">MALAYAL ARB FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MALINTUBOAN WOMEN&apos;S ASSOCIATION">MALINTUBOAN WOMEN&apos;S ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MALUGAS FARMERS MPC">MALUGAS FARMERS MPC</option>';
+            ARBO_options_str  += '<option value="MANDIH INDIGENOUS WOMEN ASSOCIATION">MANDIH INDIGENOUS WOMEN ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MANGOP KALIPUNAN NG LIPING PILIPINA">MANGOP KALIPUNAN NG LIPING PILIPINA</option>';
+            ARBO_options_str  += '<option value="MARAS SMALL COCONUT FARMERS MULTI-PURPOSE COOPERATIVE">MARAS SMALL COCONUT FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="MARCELO WOMEN WORKERS ASSOCIATION">MARCELO WOMEN WORKERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MARIA CRISTINA AGRARIAN REFORM BENEFICIARIES ASSOCIATION">MARIA CRISTINA AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MASIDLAKON-ASENIERO-SIGAYAN-SAN FRANCISCO ARBS & FARMERS CREDIT COOPERATIVE">MASIDLAKON-ASENIERO-SIGAYAN-SAN FRANCISCO ARBS & FARMERS CREDIT COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="MATUNOY ARB AND FARMERS ASSOCIATION">MATUNOY ARB AND FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MAUSWAGON AGRARIAN REFORM BENEFICIARIES ASSOCIATION">MAUSWAGON AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="MOSICA PABALICA AGRARIAN REFORM BENEFICIARIES COOPERATIVE (MOPARBECO)">MOSICA PABALICA AGRARIAN REFORM BENEFICIARIES COOPERATIVE (MOPARBECO)</option>';
+            ARBO_options_str  += '<option value="MOYO FARMERS MULTI-PURPOSE COOPERATIVE">MOYO FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="NEW DAPITAN AGRARIAN REFORM COOPERATIVE">NEW DAPITAN AGRARIAN REFORM COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="NEW DAPITAN RURAL FARMERS ASSOCIATION">NEW DAPITAN RURAL FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="NEW GEM-SAN MULTI-PURPOSE COOPERATIVE">NEW GEM-SAN MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="NEW SICAYAB, SAN PEDRO, DANSULLAN FARMERS MULTI-PURPOSE COOPERATIVE">NEW SICAYAB, SAN PEDRO, DANSULLAN FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="NEW TANGUB AGRARIAN REFORM BENEFICIARIES ASSOCIATION">NEW TANGUB AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="OSUKAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE (OSARBECO)">OSUKAN AGRARIAN REFORM BENEFICIARIES COOPERATIVE (OSARBECO)</option>';
+            ARBO_options_str  += '<option value="PAMANSALAN FARMERS MULTIPURPOSE COOPERATIVE">PAMANSALAN FARMERS MULTIPURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="PANABUTAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION">PANABUTAN AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="PANGALALAN ARB ASSOCIATION">PANGALALAN ARB ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="PATAWAG FARMERS AND INDIGENOUS PEOPLE ASSOCIATION">PATAWAG FARMERS AND INDIGENOUS PEOPLE ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="PATUNAN FARMERS ASSOCIATION">PATUNAN FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="PIANON AGRARIAN REFORM BENEFICIARIES ASSOCIATION">PIANON AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="PITOGO ARB ASSOCIATION">PITOGO ARB ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="RISEN CHRIST PARISH BEC MULTI-PURPOSE COOPERATIVE">RISEN CHRIST PARISH BEC MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="RIZALINA AGRARIAN FARMERS ASSOCIATION">RIZALINA AGRARIAN FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="RODRIGUEZ ESTATE OF BATAYAN AGRARIAN REFORM BENEFICIARIES ASS. (REOBARBA)">RODRIGUEZ ESTATE OF BATAYAN AGRARIAN REFORM BENEFICIARIES ASS. (REOBARBA)</option>';
+            ARBO_options_str  += '<option value="S. CABRAL AGRARIAN REFORM BENEFICIARIES ASSOCIATION">S. CABRAL AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="S. CABRAL WOMEN&apos;S ASSOCIATION">S. CABRAL WOMEN&apos;S ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SALUG FARMERS MULTI-PURPOSE COOPERATIVE (SAFAMPCO)">SALUG FARMERS MULTI-PURPOSE COOPERATIVE (SAFAMPCO)</option>';
+            ARBO_options_str  += '<option value="SAN ISIDRO ARBs & FARMERS ASSOCIATION">SAN ISIDRO ARBs & FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SAN JOSE MULTI-PURPOSE COOPERATIVE">SAN JOSE MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SAN JOSE RURAL IMPROVEMENT CLUB WOMEN&apos;S ASSOCIATION">SAN JOSE RURAL IMPROVEMENT CLUB WOMEN&apos;S ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SAN MARTIN AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SAN MARTIN AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SAN MIGUEL AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">SAN MIGUEL AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SAN ROQUE GUTALAC MULTI-PURPOSE COOPERATIVE">SAN ROQUE GUTALAC MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SAN VICENTE AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SAN VICENTE AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SAN VICENTE AGRICULTURAL MPC">SAN VICENTE AGRICULTURAL MPC</option>';
+            ARBO_options_str  += '<option value="SANAO FARMERS AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SANAO FARMERS AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SANEDAN IRRIGATORS&apos; ASSOCIATION, INC.">SANEDAN IRRIGATORS&apos; ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="SANTO ROSARIO AGRARIAN REFORM BENEFICIARIES COOPERATIVE">SANTO ROSARIO AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SEBACA AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SEBACA AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SERES FARMERS AGRARIAN REFORM COOPERATIVE">SERES FARMERS AGRARIAN REFORM COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SIANAN RURAL WATER SYSTEM AND SANITATION">SIANAN RURAL WATER SYSTEM AND SANITATION</option>';
+            ARBO_options_str  += '<option value="SIARI VALLEY AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">SIARI VALLEY AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SIAYAN FARMERS MULTI-PURPOSE COOPERATIVE">SIAYAN FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SIBUTAD AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SIBUTAD AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SILALELA IRRIGATORS&apos; ASSOCIATION, INC.">SILALELA IRRIGATORS&apos; ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="SILANO AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SILANO AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SIM IRRIGATORS ASSOCIATION, INC.">SIM IRRIGATORS ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="SIMASFRATTI IRRIGATOR&apos;S ASSOCIATION, INC.">SIMASFRATTI IRRIGATOR&apos;S ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="SINDANGAN PD27 FARMER-BENEFICIARIES ASSOCIATION">SINDANGAN PD27 FARMER-BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SIPAON AGRARIAN REFORM FARMERS ASSOCIATION">SIPAON AGRARIAN REFORM FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SIPIT AGRARIAN REFORM BENEFICIARIES ASSOCIATION">SIPIT AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SIRAWAI SRI AGRARIAN REFORM BENEFICIARIES&apos; ASSOCIATION">SIRAWAI SRI AGRARIAN REFORM BENEFICIARIES&apos; ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SITIO BAYOL FARMERS ASSOCIATION">SITIO BAYOL FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SITOG FARMERS AGRARIAN REFORM  COOPERATIVE">SITOG FARMERS AGRARIAN REFORM  COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SITUBU FARMERS ASSOCIATION">SITUBU FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="SOGUILON FARMERS MULTI-PURPOSE COOPERATIVE">SOGUILON FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="SOUTH MAPANG FARMERS AND FISHERMEN ASSOCIATION">SOUTH MAPANG FARMERS AND FISHERMEN ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="ST. IGNATIUS DE LOYOLA MULTI-PURPOSE COOPERATIVE">ST. IGNATIUS DE LOYOLA MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="STA MARIA AGRARIAN REFORM BENEFICIARIES COOPERATIVE">STA MARIA AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="STA. CRUZ SMALL COCONUT FARMERS MULTI-PURPOSE COOPERATIVE">STA. CRUZ SMALL COCONUT FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="STO. NI�O BARILI AGRARIAN REFORM BENEFICIARIES ASSOCIATION">STO. NI�O BARILI AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="STO. NI�O FARMERS/CARP MULTI-PURPOSE COOPERATIVE">STO. NI�O FARMERS/CARP MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="TALINGA FARM WORKERS ASSOCIATION">TALINGA FARM WORKERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="TAMIL AGRARIAN REFORM BENEFICIARIES COOPERATIVE">TAMIL AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="TAMPILISAN UNITED FARMERS MULTI-PURPOSE COOPERATIVE">TAMPILISAN UNITED FARMERS MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="TAYAGAN FARMERS IRRIGATORS&apos; ASSOCIATION, INC.">TAYAGAN FARMERS IRRIGATORS&apos; ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="TERESITA AGRARIAN REFORM BENEFICIARIES COOPERATIVE">TERESITA AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="TIGBANGAO UNITED WOMEN&apos;S ASSOCIATION (TUWA)">TIGBANGAO UNITED WOMEN&apos;S ASSOCIATION (TUWA)</option>';
+            ARBO_options_str  += '<option value="TINGLAN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE">TINGLAN AGRARIAN REFORM BENEFICIARIES MULTI-PURPOSE COOPERATIVE</option>';
+            ARBO_options_str  += '<option value="TINIGUIBAN FARMERS AND AGRARIAN REFORM BENEFICIARIES ASSOCIATION">TINIGUIBAN FARMERS AND AGRARIAN REFORM BENEFICIARIES ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="TOLON FARMERS ASSOCIATION">TOLON FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="TRIPLE "L" IRRIGATORS ASSOCIATION INCORPORATED">TRIPLE "L" IRRIGATORS ASSOCIATION INCORPORATED</option>';
+            ARBO_options_str  += '<option value="UPPER BOBONGAN LABASON IRRIGATORS ASSOCIATION, INC.">UPPER BOBONGAN LABASON IRRIGATORS ASSOCIATION, INC.</option>';
+            ARBO_options_str  += '<option value="UPPER GUTALAC FARMERS ASSOCIATION (UGFA)">UPPER GUTALAC FARMERS ASSOCIATION (UGFA)</option>';
+            ARBO_options_str  += '<option value="VENUS AGRARIAN REFORM BENEFICIARIES FARMERS ASSOCIATION">VENUS AGRARIAN REFORM BENEFICIARIES FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="VILLARAMOS FARMERS ASSOCIATION">VILLARAMOS FARMERS ASSOCIATION</option>';
+            ARBO_options_str  += '<option value="VILLARICO AGRARIAN REFORM BENEFICIARIES COOPERATIVE">VILLARICO AGRARIAN REFORM BENEFICIARIES COOPERATIVE</option>';
+            sel_ARBO.innerHTML = ARBO_options_str;
+            div_ARBO.appendChild(sel_ARBO);
+            var lab_ARBO = document.createElement('div');
+            lab_ARBO.innerHTML = 'ARBO';
+            lab_ARBO.className = 'filterlabel';
+            div_ARBO.appendChild(lab_ARBO);
+            var reset_ARBO = document.createElement('div');
+            reset_ARBO.innerHTML = 'clear filter';
+            reset_ARBO.className = 'filterlabel';
+            reset_ARBO.onclick = function() {
+                var options = document.getElementById("sel_ARBO").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ARBO.appendChild(reset_ARBO);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_SPTitle = document.createElement('div');
+            div_SPTitle.id = "div_SPTitle";
+            div_SPTitle.className= "filterselect";
+            document.getElementById("menu").appendChild(div_SPTitle);
+            sel_SPTitle = document.createElement('select');
+            sel_SPTitle.multiple = true;
+            sel_SPTitle.size = 10;
+            sel_SPTitle.id = "sel_SPTitle";
+            var SPTitle_options_str = "<option value='' unselected></option>";
+            sel_SPTitle.onchange = function(){filterFunc()};
+            SPTitle_options_str  += '<option value="ADDIONAL GRAVELING OF MOLITON-SINDULAN FMR">ADDIONAL GRAVELING OF MOLITON-SINDULAN FMR</option>';
+            SPTitle_options_str  += '<option value="AGRI WATER SYSTEM (AWS) (BRGY POBLACION (SITIO BALAS))">AGRI WATER SYSTEM (AWS) (BRGY POBLACION (SITIO BALAS))</option>';
+            SPTitle_options_str  += '<option value="BAGO ELEM. SCHOOL REHAB.">BAGO ELEM. SCHOOL REHAB.</option>';
+            SPTitle_options_str  += '<option value="BANGANON L2">BANGANON L2</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HALL LIGHTING (BH) (BARANGAY NAPULAN)">BARANGAY HALL LIGHTING (BH) (BARANGAY NAPULAN)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HALL LIGHTING (BH) (BRGY. DULIAN)">BARANGAY HALL LIGHTING (BH) (BRGY. DULIAN)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HALL LIGHTING (BH) (BRGY. MOYO)">BARANGAY HALL LIGHTING (BH) (BRGY. MOYO)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HALL LIGHTING (BH) (BRGY. TITIK)">BARANGAY HALL LIGHTING (BH) (BRGY. TITIK)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HEALTH CLINIC (BHC) (BARANGAYS CULASIAN AND LUBOK)">BARANGAY HEALTH CLINIC (BHC) (BARANGAYS CULASIAN AND LUBOK)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HEALTH CLINIC (BHC) (BRGY. DULIAN)">BARANGAY HEALTH CLINIC (BHC) (BRGY. DULIAN)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HEALTH CLINIC (BHC) (BRGY. MOYO)">BARANGAY HEALTH CLINIC (BHC) (BRGY. MOYO)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HEALTH CLINIC (BHC) (SITIO CENTRO, CANIBONGAN; GASI, MOLITON; AND BRGY. CAPE)">BARANGAY HEALTH CLINIC (BHC) (SITIO CENTRO, CANIBONGAN; GASI, MOLITON; AND BRGY. CAPE)</option>';
+            SPTitle_options_str  += '<option value="BARANGAY HEALTH CLINIC (BHC) (SITIO SIPIT, BRGY RAMBON)">BARANGAY HEALTH CLINIC (BHC) (SITIO SIPIT, BRGY RAMBON)</option>';
+            SPTitle_options_str  += '<option value="BUNAWAN ELEM. SCHOOL REHAB.">BUNAWAN ELEM. SCHOOL REHAB.</option>';
+            SPTitle_options_str  += '<option value="BUNAWAN WATER SUPPLY LEVEL II">BUNAWAN WATER SUPPLY LEVEL II</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (1 UNIT IN SITIO LOTOT OF BARANGAY BINONI; 2 UNITS IN SITIO SIPIT OF BARANGAY RAMBON)">COMMUNITY LIGHTING SYSTEM  (1 UNIT IN SITIO LOTOT OF BARANGAY BINONI; 2 UNITS IN SITIO SIPIT OF BARANGAY RAMBON)</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BARANGAYS PULA BATO, CULASIAN, LIBOK AND NAPULAN)">COMMUNITY LIGHTING SYSTEM  (BARANGAYS PULA BATO, CULASIAN, LIBOK AND NAPULAN)</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BRGY POBLACION (SITIO BALAS) AND BRGY BATAYAN (SITIO LANSAD))">COMMUNITY LIGHTING SYSTEM  (BRGY POBLACION (SITIO BALAS) AND BRGY BATAYAN (SITIO LANSAD))</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BRGY. DULIAN)">COMMUNITY LIGHTING SYSTEM  (BRGY. DULIAN)</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BRGY. TITIK (PROPER, GALIMON, WALOWANGKA, LAKSA, & BIWA))">COMMUNITY LIGHTING SYSTEM  (BRGY. TITIK (PROPER, GALIMON, WALOWANGKA, LAKSA, & BIWA))</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BRGYS. CANIBONGAN, MOLITON AND CAPE)">COMMUNITY LIGHTING SYSTEM  (BRGYS. CANIBONGAN, MOLITON AND CAPE)</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (BRGYS. MAHAYAHAY AND LICABANG)">COMMUNITY LIGHTING SYSTEM  (BRGYS. MAHAYAHAY AND LICABANG)</option>';
+            SPTitle_options_str  += '<option value="COMMUNITY LIGHTING SYSTEM  (SITIOS PASE AND PROPER, BRGY. MOYO)">COMMUNITY LIGHTING SYSTEM  (SITIOS PASE AND PROPER, BRGY. MOYO)</option>';
+            SPTitle_options_str  += '<option value="CONCRETE PAVING OF DUMPILAS BRGY. ROAD(BIALONG-BRGY. PROPER SECTI">CONCRETE PAVING OF DUMPILAS BRGY. ROAD(BIALONG-BRGY. PROPER SECTI</option>';
+            SPTitle_options_str  += '<option value="CONCRETE PAVING OF SITIO JAIY - SITIO SIBULAN, BRGY. BALAS FMR">CONCRETE PAVING OF SITIO JAIY - SITIO SIBULAN, BRGY. BALAS FMR</option>';
+            SPTitle_options_str  += '<option value="CONCRETING OF GUPOT FMR">CONCRETING OF GUPOT FMR</option>';
+            SPTitle_options_str  += '<option value="CONCRETING OF JNR PANGIAN-GREENRIDGE FMR">CONCRETING OF JNR PANGIAN-GREENRIDGE FMR</option>';
+            SPTitle_options_str  += '<option value="CONCRETING OF LINGATONGAN-MESES FMR">CONCRETING OF LINGATONGAN-MESES FMR</option>';
+            SPTitle_options_str  += '<option value="CONCRETING OF MOTIBOT-STO. ROSARIO FMR">CONCRETING OF MOTIBOT-STO. ROSARIO FMR</option>';
+            SPTitle_options_str  += '<option value="CONCRETING OF POBLACION-ZNAC FARM TO MARKET ROAD">CONCRETING OF POBLACION-ZNAC FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF BACUNG BHS">CONST&apos;N. OF BACUNG BHS</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF BHS">CONST&apos;N. OF BHS</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF BUNAWAN BHS">CONST&apos;N. OF BUNAWAN BHS</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF CAMUL WS LII">CONST&apos;N. OF CAMUL WS LII</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF CANUTO ENERIO BHS">CONST&apos;N. OF CANUTO ENERIO BHS</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF DILUCOT ESB">CONST&apos;N. OF DILUCOT ESB</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF DIONUM BRGY. ROAD">CONST&apos;N. OF DIONUM BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF GODOD CENTRAL ESB">CONST&apos;N. OF GODOD CENTRAL ESB</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF LOMOGOM ESB">CONST&apos;N. OF LOMOGOM ESB</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF LUMBIA ESB">CONST&apos;N. OF LUMBIA ESB</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF PL">CONST&apos;N. OF PL</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF PONGOLAN ES SPL">CONST&apos;N. OF PONGOLAN ES SPL</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF SAN JOSE BHS">CONST&apos;N. OF SAN JOSE BHS</option>';
+            SPTitle_options_str  += '<option value="CONST&apos;N. OF WSS W/ 1 SPL & 50 PL">CONST&apos;N. OF WSS W/ 1 SPL & 50 PL</option>';
+            SPTitle_options_str  += '<option value="CONST. OF BARILI, TALINGA BRGY. ROAD">CONST. OF BARILI, TALINGA BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST. OF CROP/SOLAR DRIER (BRGY. SINUYAK)">CONST. OF CROP/SOLAR DRIER (BRGY. SINUYAK)</option>';
+            SPTitle_options_str  += '<option value="CONST. OF GLIVS PHF">CONST. OF GLIVS PHF</option>';
+            SPTitle_options_str  += '<option value="CONST. OF ISIS-MAGASAWAD ROAD">CONST. OF ISIS-MAGASAWAD ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST. OF LIVELIHOOD AND FISH PROCESSING CENTER (POLANDOK)">CONST. OF LIVELIHOOD AND FISH PROCESSING CENTER (POLANDOK)</option>';
+            SPTitle_options_str  += '<option value="CONST. OF LOWER GUMAY SHALLOW WELLS">CONST. OF LOWER GUMAY SHALLOW WELLS</option>';
+            SPTitle_options_str  += '<option value="CONST. OF MARKETING CENTER">CONST. OF MARKETING CENTER</option>';
+            SPTitle_options_str  += '<option value="CONST. OF MPC">CONST. OF MPC</option>';
+            SPTitle_options_str  += '<option value="CONST. OF MULTI-PURPOSE CENTER WITH THREE (3)  STOREY ROOMS,TALINGA">CONST. OF MULTI-PURPOSE CENTER WITH THREE (3)  STOREY ROOMS,TALINGA</option>';
+            SPTitle_options_str  += '<option value="CONST. OF PATIK MPC">CONST. OF PATIK MPC</option>';
+            SPTitle_options_str  += '<option value="CONST. OF PATIK PWS L-II">CONST. OF PATIK PWS L-II</option>';
+            SPTitle_options_str  += '<option value="CONST. OF POBLACION-SITO STO. NINO ROAD .">CONST. OF POBLACION-SITO STO. NINO ROAD .</option>';
+            SPTitle_options_str  += '<option value="CONST. OF PWS (ADD&apos;N WORK) (CAPASE)">CONST. OF PWS (ADD&apos;N WORK) (CAPASE)</option>';
+            SPTitle_options_str  += '<option value="CONST. OF RESERVOIR 2 UNITS RESERVOIR AT BRGY. TALINGA">CONST. OF RESERVOIR 2 UNITS RESERVOIR AT BRGY. TALINGA</option>';
+            SPTitle_options_str  += '<option value="CONST. OF RESERVOIR W/ PIPELINES AT SIBATOG">CONST. OF RESERVOIR W/ PIPELINES AT SIBATOG</option>';
+            SPTitle_options_str  += '<option value="CONST. OF RHU WASHING AREA - SALUG">CONST. OF RHU WASHING AREA - SALUG</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SERES- BRGY. DIWAN ROAD">CONST. OF SERES- BRGY. DIWAN ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SIANAN BHS">CONST. OF SIANAN BHS</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING DEVELOMENT (LII) BRGY. MOYO">CONST. OF SPRING DEVELOMENT (LII) BRGY. MOYO</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING DEVELOPMENT (LII) BRGY. POLAYO">CONST. OF SPRING DEVELOPMENT (LII) BRGY. POLAYO</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING DEVELOPMENT - DUMPILAS">CONST. OF SPRING DEVELOPMENT - DUMPILAS</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING DEVELOPMENT - PARANGLUMBA">CONST. OF SPRING DEVELOPMENT - PARANGLUMBA</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING DEVELOPMENT AT BRGY. POLANDOK">CONST. OF SPRING DEVELOPMENT AT BRGY. POLANDOK</option>';
+            SPTitle_options_str  += '<option value="CONST. OF SPRING WATER DEVELOPMENT AT CAPASE">CONST. OF SPRING WATER DEVELOPMENT AT CAPASE</option>';
+            SPTitle_options_str  += '<option value="CONST. OF TINAPLAN - TITIK BRGY RD. (ROAD OPENING), BRGY. TITIK">CONST. OF TINAPLAN - TITIK BRGY RD. (ROAD OPENING), BRGY. TITIK</option>';
+            SPTitle_options_str  += '<option value="CONST. OF TINAPLAN-BUCANA BRGY. ROAD">CONST. OF TINAPLAN-BUCANA BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST. OF TINAPLAN-TITIK BRGY. ROAD">CONST. OF TINAPLAN-TITIK BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST. OF WAREHOUSE, TALINGA">CONST. OF WAREHOUSE, TALINGA</option>';
+            SPTitle_options_str  += '<option value="CONST./REHAB./REGRAVELLING OF SITOG-NEW DAPITAN RD">CONST./REHAB./REGRAVELLING OF SITOG-NEW DAPITAN RD</option>';
+            SPTitle_options_str  += '<option value="CONST./REHAB./REGRAVELLING OF UPPER SERES-NANGKA BRGY. ROAD">CONST./REHAB./REGRAVELLING OF UPPER SERES-NANGKA BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST/REHAB&apos;REGRAVELLING OF SERES-DAGAO ROAD">CONST/REHAB&apos;REGRAVELLING OF SERES-DAGAO ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST/REHAB/REGRAVELLING OF  SITOG-SANAO BRGY. ROAD">CONST/REHAB/REGRAVELLING OF  SITOG-SANAO BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONST/REHABREGRAVELLING OF  SITOG-SERES BRGY. ROAD">CONST/REHABREGRAVELLING OF  SITOG-SERES BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BALAS BARANGAY HEALTH CENTER">CONSTRUCTION OF BALAS BARANGAY HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BALAS ECCD CENTER">CONSTRUCTION OF BALAS ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BALAS ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF BALAS ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BALAS MULTI-PURPOSE PAVEMENT">CONSTRUCTION OF BALAS MULTI-PURPOSE PAVEMENT</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY BAGONG SILANG DAY CARE CENTER">CONSTRUCTION OF BARANGAY BAGONG SILANG DAY CARE CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY BUENAVISTA ONE UNIT-2 CL SCHOOL BUILDING">CONSTRUCTION OF BARANGAY BUENAVISTA ONE UNIT-2 CL SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY GUTALAC ONE UNIT-2 CL SCHOOL BUILDING">CONSTRUCTION OF BARANGAY GUTALAC ONE UNIT-2 CL SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY MAP ONE UNIT-2 CL SCHOOL BUILDING">CONSTRUCTION OF BARANGAY MAP ONE UNIT-2 CL SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY SILANG ONE UNIT-2 CL SCHOOL BUILDING">CONSTRUCTION OF BARANGAY SILANG ONE UNIT-2 CL SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BARANGAY UPPER GUTALAC DAY CARE CENTER">CONSTRUCTION OF BARANGAY UPPER GUTALAC DAY CARE CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF BOGABONGAN ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF BOGABONGAN ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF CATUYAN ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF CATUYAN ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF DEEPWELL">CONSTRUCTION OF DEEPWELL</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF DELUSOM ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF DELUSOM ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF HANGING BRIDGE (MOYO)">CONSTRUCTION OF HANGING BRIDGE (MOYO)</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF HANGING BRIDGE (POBLACION)">CONSTRUCTION OF HANGING BRIDGE (POBLACION)</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF HANGING BRIDGE - LAPUTAY">CONSTRUCTION OF HANGING BRIDGE - LAPUTAY</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF HANGING BRIDGE - PITONG GATANG">CONSTRUCTION OF HANGING BRIDGE - PITONG GATANG</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF HEADTIPAN-DILAND UNI-BRIDGE">CONSTRUCTION OF HEADTIPAN-DILAND UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF KAUSWAGAN MULTI-PURPOSE BUILDING">CONSTRUCTION OF KAUSWAGAN MULTI-PURPOSE BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LAWIGAN BARANGAY HEALTH CENTER">CONSTRUCTION OF LAWIGAN BARANGAY HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LAWIGAN ECCD CENTER">CONSTRUCTION OF LAWIGAN ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LAWIGAN ELEMENTARY SCHOOL BUILDING (PACKAGE I)">CONSTRUCTION OF LAWIGAN ELEMENTARY SCHOOL BUILDING (PACKAGE I)</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LAWIGAN ELEMENTARY SCHOOL BUILDING (PACKAGE II)">CONSTRUCTION OF LAWIGAN ELEMENTARY SCHOOL BUILDING (PACKAGE II)</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LITUBAN CIS">CONSTRUCTION OF LITUBAN CIS</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF LUMAY SOLAR DRYER">CONSTRUCTION OF LUMAY SOLAR DRYER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF MAMAD ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF MAMAD ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF MANGOP ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF MANGOP ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF MOTIBOT SOLAR DRYER">CONSTRUCTION OF MOTIBOT SOLAR DRYER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF NEW DAPITAN-STO. NIÃ‘O UNI-BRIDGE">CONSTRUCTION OF NEW DAPITAN-STO. NIÃ‘O UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF NIPAAN SOLAR DRYER">CONSTRUCTION OF NIPAAN SOLAR DRYER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF NONOYAN ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF NONOYAN ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF PALANDOK ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF PALANDOK ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF PANABUTAN ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF PANABUTAN ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF PIAO UNI-BRIDGE">CONSTRUCTION OF PIAO UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF PITUSAN UNI-BRIDGE">CONSTRUCTION OF PITUSAN UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF POBLACION MULTI-PURPOSE BUILDING">CONSTRUCTION OF POBLACION MULTI-PURPOSE BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF POBLACION SPRING DEVELOPMENT L2 PROJECT">CONSTRUCTION OF POBLACION SPRING DEVELOPMENT L2 PROJECT</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF PWS LII (BRGY. LIPAKAN)">CONSTRUCTION OF PWS LII (BRGY. LIPAKAN)</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SAN PEDRO BRGY. RD">CONSTRUCTION OF SAN PEDRO BRGY. RD</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SERONGAN MPC WITH SD">CONSTRUCTION OF SERONGAN MPC WITH SD</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SIBULAN ELEMENTARY SCHOOL BUILDING">CONSTRUCTION OF SIBULAN ELEMENTARY SCHOOL BUILDING</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SIPAKIT FMR">CONSTRUCTION OF SIPAKIT FMR</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITIO JAIY ECCD CENTER">CONSTRUCTION OF SITIO JAIY ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITIO SAWI ECCD CENTER">CONSTRUCTION OF SITIO SAWI ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITIO SIBULAN ECCD CENTER">CONSTRUCTION OF SITIO SIBULAN ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITIO SIBULAN HEALTH CENTER">CONSTRUCTION OF SITIO SIBULAN HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITOG UNI-BRIDGE">CONSTRUCTION OF SITOG UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SITUBO UNI-BRIDGE">CONSTRUCTION OF SITUBO UNI-BRIDGE</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF SPRING DEVELOPMENT AT BRGY. POBLACION">CONSTRUCTION OF SPRING DEVELOPMENT AT BRGY. POBLACION</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF STA. MARIA BARANGAY HEALTH CENTER">CONSTRUCTION OF STA. MARIA BARANGAY HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF STO. ROSARIO SOLAR DRYER">CONSTRUCTION OF STO. ROSARIO SOLAR DRYER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF UPPER GABU ECCD CENTER">CONSTRUCTION OF UPPER GABU ECCD CENTER</option>';
+            SPTitle_options_str  += '<option value="CONSTRUCTION OF UPPER GABU PWS 2">CONSTRUCTION OF UPPER GABU PWS 2</option>';
+            SPTitle_options_str  += '<option value="DALONGDONG ELEM. SCHOOL REHAB.">DALONGDONG ELEM. SCHOOL REHAB.</option>';
+            SPTitle_options_str  += '<option value="DELUCOT WATER SUPPLY LEVEL II">DELUCOT WATER SUPPLY LEVEL II</option>';
+            SPTitle_options_str  += '<option value="DOHINOB  CIP">DOHINOB  CIP</option>';
+            SPTitle_options_str  += '<option value="ESR BARCELONA">ESR BARCELONA</option>';
+            SPTitle_options_str  += '<option value="ESR JOAQUIN MACIAS">ESR JOAQUIN MACIAS</option>';
+            SPTitle_options_str  += '<option value="ESR JOAQUIN MACIAS II">ESR JOAQUIN MACIAS II</option>';
+            SPTitle_options_str  += '<option value="ESR JUAN BUGARIN">ESR JUAN BUGARIN</option>';
+            SPTitle_options_str  += '<option value="ESR SIARE VALLEY">ESR SIARE VALLEY</option>';
+            SPTitle_options_str  += '<option value="EXPANSION OF POTABLE WATER SYSTEM, POLANDOK">EXPANSION OF POTABLE WATER SYSTEM, POLANDOK</option>';
+            SPTitle_options_str  += '<option value="EXT OF GODOD RHU">EXT OF GODOD RHU</option>';
+            SPTitle_options_str  += '<option value="EXT&apos;N. OF RHU - GODOD">EXT&apos;N. OF RHU - GODOD</option>';
+            SPTitle_options_str  += '<option value="EXTENSION OF IRRIGATION SYSTEM AT SINUYAK">EXTENSION OF IRRIGATION SYSTEM AT SINUYAK</option>';
+            SPTitle_options_str  += '<option value="GODOD SPRING DEV&apos;T. PWS">GODOD SPRING DEV&apos;T. PWS</option>';
+            SPTitle_options_str  += '<option value="GUINLES CIP">GUINLES CIP</option>';
+            SPTitle_options_str  += '<option value="GUINLES RWS L2">GUINLES RWS L2</option>';
+            SPTitle_options_str  += '<option value="GUTALAC CADC FMR">GUTALAC CADC FMR</option>';
+            SPTitle_options_str  += '<option value="IMPROV./REHAB. OF CAPASE-SINDUTAN BRGY. ROAD">IMPROV./REHAB. OF CAPASE-SINDUTAN BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="IMPROV./REHAB. OF POLANDOK BRGY. ROAD.">IMPROV./REHAB. OF POLANDOK BRGY. ROAD.</option>';
+            SPTitle_options_str  += '<option value="IMPROV./REHAB. OF SINDUTAN-MOLITON-CANIBONGAN BRGY. ROAD">IMPROV./REHAB. OF SINDUTAN-MOLITON-CANIBONGAN BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="IMPROV./REHAB. OF SINDUTAN-SIBATOG-MARUPAY  BRGY. ROAD">IMPROV./REHAB. OF SINDUTAN-SIBATOG-MARUPAY  BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="IMPROVEMENT AND EXPANSION OF DELAPA PWS L II">IMPROVEMENT AND EXPANSION OF DELAPA PWS L II</option>';
+            SPTitle_options_str  += '<option value="IMPROVEMENT OF WATER SYSTEM (ELEVATED RESERVOIR),BRGY. TALINGA">IMPROVEMENT OF WATER SYSTEM (ELEVATED RESERVOIR),BRGY. TALINGA</option>';
+            SPTitle_options_str  += '<option value="IMPROVEMENT OF WATER SYSTEM L2 BRGY. TALINGA">IMPROVEMENT OF WATER SYSTEM L2 BRGY. TALINGA</option>';
+            SPTitle_options_str  += '<option value="IMPVT. OF POBLACION-STO.NINO FMR">IMPVT. OF POBLACION-STO.NINO FMR</option>';
+            SPTitle_options_str  += '<option value="INSTALLATION OF LABRADOR SHALLOW WELLS">INSTALLATION OF LABRADOR SHALLOW WELLS</option>';
+            SPTitle_options_str  += '<option value="INSTALLATION OF LANGATIAN SHALLOW WELLS">INSTALLATION OF LANGATIAN SHALLOW WELLS</option>';
+            SPTitle_options_str  += '<option value="INSTALLATION OF PIPE LINES AT MOLITON">INSTALLATION OF PIPE LINES AT MOLITON</option>';
+            SPTitle_options_str  += '<option value="INSTALLATION OF SIARE SHALLOW WELLS">INSTALLATION OF SIARE SHALLOW WELLS</option>';
+            SPTitle_options_str  += '<option value="IRRIGATION GODOD CIP">IRRIGATION GODOD CIP</option>';
+            SPTitle_options_str  += '<option value="LA UNION(LABASON) PHF">LA UNION(LABASON) PHF</option>';
+            SPTitle_options_str  += '<option value="LABASON CIS">LABASON CIS</option>';
+            SPTitle_options_str  += '<option value="LABRADOR L-II PWS">LABRADOR L-II PWS</option>';
+            SPTitle_options_str  += '<option value="LAGAG BRGY. ROAD (SERVICE AREA)">LAGAG BRGY. ROAD (SERVICE AREA)</option>';
+            SPTitle_options_str  += '<option value="LAGAG PHF">LAGAG PHF</option>';
+            SPTitle_options_str  += '<option value="LAPAYAN BAJA BRGY. RD-SERVICE AREA RD.">LAPAYAN BAJA BRGY. RD-SERVICE AREA RD.</option>';
+            SPTitle_options_str  += '<option value="LAPAYAN BAJA CIS">LAPAYAN BAJA CIS</option>';
+            SPTitle_options_str  += '<option value="LAPAYAN BAJA PHF">LAPAYAN BAJA PHF</option>';
+            SPTitle_options_str  += '<option value="LOWER MALALA CIS">LOWER MALALA CIS</option>';
+            SPTitle_options_str  += '<option value="LOWER MALALA PHF">LOWER MALALA PHF</option>';
+            SPTitle_options_str  += '<option value="LOWERING OF ROADWAY GRADE (SIBATONG)">LOWERING OF ROADWAY GRADE (SIBATONG)</option>';
+            SPTitle_options_str  += '<option value="MALUBOG ES RR">MALUBOG ES RR</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC AC 10">MARCELO ARC AC 10</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC AGRI WATER">MARCELO ARC AGRI WATER</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC BARANGAY HALL LIGHTING SYSTEM">MARCELO ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC COMMUNITY LIGHTING SYSTEM">MARCELO ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC HEALTH CENTER">MARCELO ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC POTABLE WATER">MARCELO ARC POTABLE WATER</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC SCHOOL LIGHTING SYSTEM">MARCELO ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="MARCELO ARC SOLAR HOME LIGHTING SYSTEM">MARCELO ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="MAUSWAGAN ELEM. SCHOOL REHAB.">MAUSWAGAN ELEM. SCHOOL REHAB.</option>';
+            SPTitle_options_str  += '<option value="MAUSWAGON L-I WELL REHAB.">MAUSWAGON L-I WELL REHAB.</option>';
+            SPTitle_options_str  += '<option value="MULTI-PURPOSE CENTER AT SINUYAK">MULTI-PURPOSE CENTER AT SINUYAK</option>';
+            SPTitle_options_str  += '<option value="MULTI-PURPOSE CENTER AT SITOG">MULTI-PURPOSE CENTER AT SITOG</option>';
+            SPTitle_options_str  += '<option value="NATIONAL RD-VILLAHERMOSA PROPER-SITIO LUYUNGAN RD">NATIONAL RD-VILLAHERMOSA PROPER-SITIO LUYUNGAN RD</option>';
+            SPTitle_options_str  += '<option value="NEW SICAYAB-LIMBACONGA DANSULLAN B. RD">NEW SICAYAB-LIMBACONGA DANSULLAN B. RD</option>';
+            SPTitle_options_str  += '<option value="OPENING OF PARANGLUMBA BRGY. ROAD(BRGY. PROPER-SITIO TULUHON}">OPENING OF PARANGLUMBA BRGY. ROAD(BRGY. PROPER-SITIO TULUHON}</option>';
+            SPTitle_options_str  += '<option value="OSUKAN CIS">OSUKAN CIS</option>';
+            SPTitle_options_str  += '<option value="OSUKAN PHF">OSUKAN PHF</option>';
+            SPTitle_options_str  += '<option value="PANGALALAN SPRING DEV&apos;T.">PANGALALAN SPRING DEV&apos;T.</option>';
+            SPTitle_options_str  += '<option value="PIPING LINE SYSTEM AT BARILI SPRING DEV&apos;T AT BRGY. TALINGA">PIPING LINE SYSTEM AT BARILI SPRING DEV&apos;T AT BRGY. TALINGA</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. BAGO">PL BRGY. BAGO</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. BANGANON">PL BRGY. BANGANON</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. BARCELONA">PL BRGY. BARCELONA</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. CAMUL">PL BRGY. CAMUL</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. IMELDA">PL BRGY. IMELDA</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. J. MACIAS">PL BRGY. J. MACIAS</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. LABRADOR">PL BRGY. LABRADOR</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. LANGATIAN">PL BRGY. LANGATIAN</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. MAUSWAGON">PL BRGY. MAUSWAGON</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. PANGALALAN">PL BRGY. PANGALALAN</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. POBLACION">PL BRGY. POBLACION</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. RG MACIAS">PL BRGY. RG MACIAS</option>';
+            SPTitle_options_str  += '<option value="PL BRGY. SIARE">PL BRGY. SIARE</option>';
+            SPTitle_options_str  += '<option value="PL BRGY.PONGOLAN">PL BRGY.PONGOLAN</option>';
+            SPTitle_options_str  += '<option value="PL LOWER GUMAY BRGY.">PL LOWER GUMAY BRGY.</option>';
+            SPTitle_options_str  += '<option value="POB. LOWER GUMAY STEEP SLOPE">POB. LOWER GUMAY STEEP SLOPE</option>';
+            SPTitle_options_str  += '<option value="POBLACION WS LII">POBLACION WS LII</option>';
+            SPTitle_options_str  += '<option value="PUROK 15 RD & LOPOC-LAWAGAN RD LA UNION (LABASON JNCT.) W/ CBC">PUROK 15 RD & LOPOC-LAWAGAN RD LA UNION (LABASON JNCT.) W/ CBC</option>';
+            SPTitle_options_str  += '<option value="REHAB OF HIGHWAY - PONGOLAN BOUNDARY">REHAB OF HIGHWAY - PONGOLAN BOUNDARY</option>';
+            SPTitle_options_str  += '<option value="REHAB OF MAUSWAGON-POBLACION ROAD">REHAB OF MAUSWAGON-POBLACION ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB OF SIGAMOK-LUMAPING FMR">REHAB OF SIGAMOK-LUMAPING FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB OF SILVESTRE CABRAL">REHAB OF SILVESTRE CABRAL</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF BANGANON E/S TO BEACH ROAD">REHAB. OF BANGANON E/S TO BEACH ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF BANGANON ELEM. SCHOOL">REHAB. OF BANGANON ELEM. SCHOOL</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF BHS & EXTENSION - COMPRA, LILOY">REHAB. OF BHS & EXTENSION - COMPRA, LILOY</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF BUNAWAN ESB">REHAB. OF BUNAWAN ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF CAIMITO - CAMOTE - DAISY SAGING RD.">REHAB. OF CAIMITO - CAMOTE - DAISY SAGING RD.</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF GALINGON TAMPILISAN BHS">REHAB. OF GALINGON TAMPILISAN BHS</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF GODOD-SIANAN-LOMOGOM ROAD">REHAB. OF GODOD-SIANAN-LOMOGOM ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF JUAN BUGARIN ESB">REHAB. OF JUAN BUGARIN ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LA ESPERANZA COMMUNIAL IRRIGATION SYSTEM">REHAB. OF LA ESPERANZA COMMUNIAL IRRIGATION SYSTEM</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LABASON RHU">REHAB. OF LABASON RHU</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LABRADOR ESB">REHAB. OF LABRADOR ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LAPAYAN BAJA CIS">REHAB. OF LAPAYAN BAJA CIS</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LILOY RHU FLOORING">REHAB. OF LILOY RHU FLOORING</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LOWER GUMAY - DIONUM FMR">REHAB. OF LOWER GUMAY - DIONUM FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF LOWER GUMAY ELEM. SCHOOL PRE-FAB.">REHAB. OF LOWER GUMAY ELEM. SCHOOL PRE-FAB.</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF MALUBOG  ESB">REHAB. OF MALUBOG  ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF MAMARA-CANIBONGAN-MOLITON FMR">REHAB. OF MAMARA-CANIBONGAN-MOLITON FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF MANUEL A. ROXAS ESB">REHAB. OF MANUEL A. ROXAS ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF MAUSWAGON ESB">REHAB. OF MAUSWAGON ESB</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF MOLOS BHS">REHAB. OF MOLOS BHS</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF POBLACION - SITIO TUAYON FMR">REHAB. OF POBLACION - SITIO TUAYON FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF PUROK MACOPA - IPIL-IPIL - CENTRAL ROAD">REHAB. OF PUROK MACOPA - IPIL-IPIL - CENTRAL ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF SIARE SHALLOW WELLS">REHAB. OF SIARE SHALLOW WELLS</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF SINDUTAN-BALUBO-SITIO SUNGGAY FMR">REHAB. OF SINDUTAN-BALUBO-SITIO SUNGGAY FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF SITIO SUNGGAY-SITIO SAPA IBO-PANAMPALAY FMR">REHAB. OF SITIO SUNGGAY-SITIO SAPA IBO-PANAMPALAY FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF TAMPILISAN RHU">REHAB. OF TAMPILISAN RHU</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF VILLAHERMOSO-LIPAKAN-SITIO GUIMAKAN FMR">REHAB. OF VILLAHERMOSO-LIPAKAN-SITIO GUIMAKAN FMR</option>';
+            SPTitle_options_str  += '<option value="REHAB. OF WSS - KAUSWAGAN">REHAB. OF WSS - KAUSWAGAN</option>';
+            SPTitle_options_str  += '<option value="REHAB./CONCRETING OF POBLACION-MOYO FARM TO MARKET ROAD">REHAB./CONCRETING OF POBLACION-MOYO FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB./IMPROV. OF LUPOT-BULAKTAG-BING POBLACION BRGY. ROAD">REHAB./IMPROV. OF LUPOT-BULAKTAG-BING POBLACION BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB./REGRAVELLING OF SINUYAK-SANAO BRGY. ROAD">REHAB./REGRAVELLING OF SINUYAK-SANAO BRGY. ROAD</option>';
+            SPTitle_options_str  += '<option value="REHAB/CONCRETING OF JUNCTION MUÃ‘OZ-LITOLET FARM TO MARKET ROAD">REHAB/CONCRETING OF JUNCTION MUÃ‘OZ-LITOLET FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF DIPOLOG COMMUNAL IRRIGATION SYSTEM">REHABILITATION OF DIPOLOG COMMUNAL IRRIGATION SYSTEM</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF ILIHAN-LABAKID FMR">REHABILITATION OF ILIHAN-LABAKID FMR</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF LA ESPERANZA-DAMASING FMR">REHABILITATION OF LA ESPERANZA-DAMASING FMR</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF LOWER GUMAY ELEM. SCHOOL BLDG.">REHABILITATION OF LOWER GUMAY ELEM. SCHOOL BLDG.</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF MAUSWAGON-SITIO TUAYON FMR">REHABILITATION OF MAUSWAGON-SITIO TUAYON FMR</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF SAN MIGUEL LEVEL II PWS">REHABILITATION OF SAN MIGUEL LEVEL II PWS</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION OF UPPER IRASAN-LABAKID FMR">REHABILITATION OF UPPER IRASAN-LABAKID FMR</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION WITH 0.70 KM CONCRETING OF MOYO-SITIO PASE FARM TO MARKET ROAD">REHABILITATION WITH 0.70 KM CONCRETING OF MOYO-SITIO PASE FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION WITH 0.75 KM CONCRETING OF PARANGLUMBA FARM TO MARKET ROAD">REHABILITATION WITH 0.75 KM CONCRETING OF PARANGLUMBA FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION WITH 0.90 KM CONCRETING OF GONAYEN-SAYAW FARM TO MARKET ROAD">REHABILITATION WITH 0.90 KM CONCRETING OF GONAYEN-SAYAW FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION WITH 1.10 KMS CONCRETING OF POLAYO-DENUYAN FARM TO MARKET ROAD">REHABILITATION WITH 1.10 KMS CONCRETING OF POLAYO-DENUYAN FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION WITH 2.00 KM CONCRETING OF SITIO BOLANAO-LITOLET FARM TO MARKET ROAD">REHABILITATION WITH 2.00 KM CONCRETING OF SITIO BOLANAO-LITOLET FARM TO MARKET ROAD</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION/CONCRETING OF 0.51453 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE III)">REHABILITATION/CONCRETING OF 0.51453 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE III)</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION/CONCRETING OF 1.470 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE I)">REHABILITATION/CONCRETING OF 1.470 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE I)</option>';
+            SPTitle_options_str  += '<option value="REHABILITATION/CONCRETING OF 3.300 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE II)">REHABILITATION/CONCRETING OF 3.300 KM. FROM SITIO REBE-BRGY. BALUNO FMR (PHASE II)</option>';
+            SPTitle_options_str  += '<option value="REHABILITATIONOF 3.660 KM. CABONG-TININGGAAN FMR (PHASE I)">REHABILITATIONOF 3.660 KM. CABONG-TININGGAAN FMR (PHASE I)</option>';
+            SPTitle_options_str  += '<option value="REPAIR/REHAB. OF SITIO CALATON,POBLACION-POLAYO PROPER FMR">REPAIR/REHAB. OF SITIO CALATON,POBLACION-POLAYO PROPER FMR</option>';
+            SPTitle_options_str  += '<option value="RR BAGO-PANGALALAN ROAD">RR BAGO-PANGALALAN ROAD</option>';
+            SPTitle_options_str  += '<option value="SAN PEDRO & SBL GROWTH CENTER ARC BARANGAY HALL LIGHTING SYSTEM">SAN PEDRO & SBL GROWTH CENTER ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SAN PEDRO & SBL GROWTH CENTER ARC COMMUNITY LIGHTING SYSTEM">SAN PEDRO & SBL GROWTH CENTER ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SAN PEDRO & SBL GROWTH CENTER ARC HEALTH CENTER">SAN PEDRO & SBL GROWTH CENTER ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="SAN PEDRO & SBL GROWTH CENTER ARC SCHOOL LIGHTING SYSTEM">SAN PEDRO & SBL GROWTH CENTER ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SAN PEDRO & SBL GROWTH CENTER ARC SOLAR HOME LIGHTING SYSTEM">SAN PEDRO & SBL GROWTH CENTER ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BARANGAY CULASIAN )">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BARANGAY CULASIAN )</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY POBLACION (SITIO BALAS))">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY POBLACION (SITIO BALAS))</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. DULIAN)">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. DULIAN)</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. MOYO)">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. MOYO)</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. TITIK)">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGY. TITIK)</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGYS. CANIBONGAN, MOLITON AND CAPE)">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (BRGYS. CANIBONGAN, MOLITON AND CAPE)</option>';
+            SPTitle_options_str  += '<option value="SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (SITIO SIPIT OF BARANGAY RAMBON)">SCHOOL PACKAGE SYSTEM TV/DVD (SCH)  (SITIO SIPIT OF BARANGAY RAMBON)</option>';
+            SPTitle_options_str  += '<option value="SEBATANG-MARANTAO ROAD">SEBATANG-MARANTAO ROAD</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC BARANGAY HALL LIGHTING SYSTEM">SEPANSUPA ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC COMMUNITY LIGHTING SYSTEM">SEPANSUPA ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC HEALTH CENTER">SEPANSUPA ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC POTABLE WATER">SEPANSUPA ARC POTABLE WATER</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC SCHOOL LIGHTING SYSTEM">SEPANSUPA ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SEPANSUPA ARC SOLAR HOME LIGHTING SYSTEM">SEPANSUPA ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIANAN WATER SUPPLY LEVEL II">SIANAN WATER SUPPLY LEVEL II</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC BARANGAY HALL LIGHTING SYSTEM">SIAYAN EAST ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC COMMUNITY LIGHTING SYSTEM">SIAYAN EAST ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC HEALTH CENTER">SIAYAN EAST ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC POTABLE WATER">SIAYAN EAST ARC POTABLE WATER</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC SCHOOL LIGHTING SYSTEM">SIAYAN EAST ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIAYAN EAST ARC SOLAR HOME LIGHTING SYSTEM">SIAYAN EAST ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIGILO AC10">SIGILO AC10</option>';
+            SPTitle_options_str  += '<option value="SIGILO AGRI-WATER SYSTEM">SIGILO AGRI-WATER SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC BARANGAY HALL LIGHTING SYSTEM">SIGILO ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC COMMUNITY LIGHTING SYSTEM">SIGILO ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC HEALTH CENTER">SIGILO ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC POTABLE WATER">SIGILO ARC POTABLE WATER</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC SCHOOL LIGHTING SYSTEM">SIGILO ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SIGILO ARC SOLAR HOME LIGHTING SYSTEM">SIGILO ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="SILVESTRE CABRAL CIP">SILVESTRE CABRAL CIP</option>';
+            SPTitle_options_str  += '<option value="SINUYAK SERES (CIS) IP">SINUYAK SERES (CIS) IP</option>';
+            SPTitle_options_str  += '<option value="SLOPE PROTECTION & LINE DITCH OF MULTI-PURPOSE BUILDING">SLOPE PROTECTION & LINE DITCH OF MULTI-PURPOSE BUILDING</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) ( LICAMA OF BRGY. MAHAYAHAY, PIATEL & LIBUANAN OF BRGY. LICABANG)">SOLAR HOME SYSTEMS (SHS) ( LICAMA OF BRGY. MAHAYAHAY, PIATEL & LIBUANAN OF BRGY. LICABANG)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGY POBLACION (SITIO BALAS) AND BRGY BATAYAN (SITIO LANSAD))">SOLAR HOME SYSTEMS (SHS) (BRGY POBLACION (SITIO BALAS) AND BRGY BATAYAN (SITIO LANSAD))</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGY. MOYO)">SOLAR HOME SYSTEMS (SHS) (BRGY. MOYO)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGY. MOYO) ADDITIONAL">SOLAR HOME SYSTEMS (SHS) (BRGY. MOYO) ADDITIONAL</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGY. TITIK (PROPER, GALIMON, WALOWANGKA, LAKSA, & BIWA))">SOLAR HOME SYSTEMS (SHS) (BRGY. TITIK (PROPER, GALIMON, WALOWANGKA, LAKSA, & BIWA))</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGYS. CANIBONGAN, MOLITON, CAPE AND 6 SITIOS CAPASE)">SOLAR HOME SYSTEMS (SHS) (BRGYS. CANIBONGAN, MOLITON, CAPE AND 6 SITIOS CAPASE)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (BRGYS. PULA BATO AND NAPULAN)">SOLAR HOME SYSTEMS (SHS) (BRGYS. PULA BATO AND NAPULAN)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (PUROK 1-7, BRGY. DULIAN)">SOLAR HOME SYSTEMS (SHS) (PUROK 1-7, BRGY. DULIAN)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (SITIO SIPIT OF BARANGAY RAMBON; SITIO LOTOT OF BARANGAY BINONI)">SOLAR HOME SYSTEMS (SHS) (SITIO SIPIT OF BARANGAY RAMBON; SITIO LOTOT OF BARANGAY BINONI)</option>';
+            SPTitle_options_str  += '<option value="SOLAR HOME SYSTEMS (SHS) (SITIO SIPIT OF BARANGAY RAMBON; SITIO LOTOT OF BARANGAY BINONI) ADDITIONAL">SOLAR HOME SYSTEMS (SHS) (SITIO SIPIT OF BARANGAY RAMBON; SITIO LOTOT OF BARANGAY BINONI) ADDITIONAL</option>';
+            SPTitle_options_str  += '<option value="SPL BAGO ELEM. SCHOOL">SPL BAGO ELEM. SCHOOL</option>';
+            SPTitle_options_str  += '<option value="SPL BARCELONA BRGY. HALL">SPL BARCELONA BRGY. HALL</option>';
+            SPTitle_options_str  += '<option value="SPL BUNAWAN ELEM. SCHOOL">SPL BUNAWAN ELEM. SCHOOL</option>';
+            SPTitle_options_str  += '<option value="SPL DALONGDONG ELEM. SCHOOL">SPL DALONGDONG ELEM. SCHOOL</option>';
+            SPTitle_options_str  += '<option value="SPL LABRADOR BRGY. HALL">SPL LABRADOR BRGY. HALL</option>';
+            SPTitle_options_str  += '<option value="SPL LOWER GUMAY BRGY. HALL">SPL LOWER GUMAY BRGY. HALL</option>';
+            SPTitle_options_str  += '<option value="SPL MAUSWAGON BRGY. MARKET">SPL MAUSWAGON BRGY. MARKET</option>';
+            SPTitle_options_str  += '<option value="SPL MAUSWAGON ELEM. SCHOOL">SPL MAUSWAGON ELEM. SCHOOL</option>';
+            SPTitle_options_str  += '<option value="SPL S. CABRAL PUBLIC TERMINAL">SPL S. CABRAL PUBLIC TERMINAL</option>';
+            SPTitle_options_str  += '<option value="SPRING DEVELOPMENT OF BARCELONA W/ DISTRIBUTION NET1">SPRING DEVELOPMENT OF BARCELONA W/ DISTRIBUTION NET1</option>';
+            SPTitle_options_str  += '<option value="SPRING DEVELOPMENT OF MAUSWAGON W/ DISTRIBUTION NET">SPRING DEVELOPMENT OF MAUSWAGON W/ DISTRIBUTION NET</option>';
+            SPTitle_options_str  += '<option value="SPRING DEVELOPMENT OF S. CABRAL W/ DISTRIBUTION NET">SPRING DEVELOPMENT OF S. CABRAL W/ DISTRIBUTION NET</option>';
+            SPTitle_options_str  += '<option value="TAYAGAN CREEK RD & OSUKAN PROV&apos;L RD TO PROP. PHF">TAYAGAN CREEK RD & OSUKAN PROV&apos;L RD TO PROP. PHF</option>';
+            SPTitle_options_str  += '<option value="TRESHER CROSSING-INLET CANAL FARM RD">TRESHER CROSSING-INLET CANAL FARM RD</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC AC10">TRIPLE MS ARC AC10</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC BARANGAY HALL LIGHTING SYSTEM">TRIPLE MS ARC BARANGAY HALL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC COMMUNITY LIGHTING SYSTEM">TRIPLE MS ARC COMMUNITY LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC HEALTH CENTER">TRIPLE MS ARC HEALTH CENTER</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC SCHOOL LIGHTING SYSTEM">TRIPLE MS ARC SCHOOL LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS ARC SOLAR HOME LIGHTING SYSTEM">TRIPLE MS ARC SOLAR HOME LIGHTING SYSTEM</option>';
+            SPTitle_options_str  += '<option value="TRIPLE MS POTABLE WATER SYSTEM">TRIPLE MS POTABLE WATER SYSTEM</option>';
+            SPTitle_options_str  += '<option value="TRIPLE S PHF">TRIPLE S PHF</option>';
+            SPTitle_options_str  += '<option value="UPGRADING/REHABILITATION OF POBLACION-NEW DAPITAN FMR">UPGRADING/REHABILITATION OF POBLACION-NEW DAPITAN FMR</option>';
+            SPTitle_options_str  += '<option value="WATER SUPPLY SYSTEM L2 AT SITOG">WATER SUPPLY SYSTEM L2 AT SITOG</option>';
+            SPTitle_options_str  += '<option value="WATER SYSTEM (L2) AT SINUYAK">WATER SYSTEM (L2) AT SINUYAK</option>';
+            SPTitle_options_str  += '<option value="WATER SYSTEM L2 AT SERES">WATER SYSTEM L2 AT SERES</option>';
+            sel_SPTitle.innerHTML = SPTitle_options_str;
+            div_SPTitle.appendChild(sel_SPTitle);
+            var lab_SPTitle = document.createElement('div');
+            lab_SPTitle.innerHTML = 'SP Title';
+            lab_SPTitle.className = 'filterlabel';
+            div_SPTitle.appendChild(lab_SPTitle);
+            var reset_SPTitle = document.createElement('div');
+            reset_SPTitle.innerHTML = 'clear filter';
+            reset_SPTitle.className = 'filterlabel';
+            reset_SPTitle.onclick = function() {
+                var options = document.getElementById("sel_SPTitle").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_SPTitle.appendChild(reset_SPTitle);
         </script>
     </body>
 </html>
